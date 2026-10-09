@@ -73,8 +73,12 @@ export type SourceProfile = {
   corrections_policy_url: string | null;
   ifcn_signatory: boolean | null;
   audience_lean: { range: string | null; evidence_url: string | null };
+  evidence: Partial<Record<EvidenceField, string>>; // קישור לראיה לכל שדה
   evidence_urls: string[];
 };
+
+export const EVIDENCE_FIELDS = ["owner", "owner_group", "funding", "press_council_member", "ifcn_signatory"] as const;
+export type EvidenceField = (typeof EVIDENCE_FIELDS)[number];
 
 export type NewsData = {
   latest: Latest;

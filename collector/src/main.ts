@@ -98,6 +98,7 @@ function publicSources(sources: Source[]) {
       corrections_policy_url: s.corrections_policy_url,
       ifcn_signatory: s.ifcn_signatory,
       audience_lean: s.audience_lean,
+      evidence: s.evidence ?? {},
       evidence_urls: s.evidence_urls,
     })),
   };

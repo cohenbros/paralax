@@ -1,7 +1,7 @@
 {
   "version": 1,
   "as_of": "2026-10-09",
-  "note": "טיוטה. שדות עם 'לאמת' או null צריכים בדיקה וקישור לראיה לפני פרסום. feed_checked = תאריך שבו הפיד נבדק ועבד.",
+  "note": "שדות פרופיל מגיעים עם קישור לראיה ב-evidence (לכל שדה) או ב-audience_lean.evidence_url. מה שלא אומת הוא null. profile_notes פנימי ולא מתפרסם.",
   "sources": [
     {
       "id": "ynet",
@@ -16,16 +16,24 @@
         "אקטואליה"
       ],
       "owner_group": "yedioth",
-      "owner": "קבוצת ידיעות אחרונות",
-      "funding": "פרטי, פרסום",
-      "press_council_member": null,
+      "owner": "קבוצת ידיעות אחרונות (מו\"ל: ארנון מוזס)",
+      "funding": null,
+      "press_council_member": false,
       "corrections_policy_url": null,
-      "ifcn_signatory": null,
+      "ifcn_signatory": false,
       "audience_lean": {
         "range": null,
         "evidence_url": null
       },
-      "evidence_urls": []
+      "evidence_urls": [],
+      "evidence": {
+        "owner": "https://en.wikipedia.org/wiki/Ynet",
+        "owner_group": "https://en.wikipedia.org/wiki/Yedioth_Ahronoth",
+        "press_council_member": "https://presscouncil.co.il/wp-content/uploads/2026/08/%D7%9E%D7%95%D7%A2%D7%A6%D7%AA-%D7%94%D7%A2%D7%99%D7%AA%D7%95%D7%A0%D7%95%D7%AA-%D7%A8%D7%A9%D7%99%D7%9E%D7%AA-%D7%97%D7%91%D7%A8%D7%95%D7%AA-%D7%95%D7%97%D7%91%D7%A8%D7%99-%D7%9E%D7%9C%D7%99%D7%90%D7%94-%D7%9E%D7%A8%D7%A5-26-1.pdf",
+        "ifcn_signatory": "https://ifcncodeofprinciples.poynter.org/signatories"
+      },
+      "profile_checked": "2026-10-09",
+      "profile_notes": "press_council_member=false: Yedioth Ahronoth group has no representative in the March 2026 plenum list; Hebrew Wikipedia (מועצת העיתונות והתקשורת בישראל) also states the Yedioth group is not a member but adopts the ethics code. Owner: Wikipedia - ynet is 'the online outlet for Yedioth Ahronoth', owned by the Yedioth Ahronoth Group; Arnon Mozes listed as publisher (Mozes family control not explicitly stated there). Audience lean: Grossman/Margalit/Mitts 2016 survey has data for the PRINT Yedioth Ahronoth (regular readers 27.9% right / 45.4% center / 26.7% left vs sample 33.6/43.0/23.3) but ynet is a different brand, so not transferred. IDI (May 2024) reports ynet as the top news site (40% primary source) but gives no breakdown by political camp."
     },
     {
       "id": "calcalist",
@@ -42,15 +50,23 @@
       ],
       "owner_group": "yedioth",
       "owner": "קבוצת ידיעות אחרונות",
-      "funding": "פרטי, פרסום",
-      "press_council_member": null,
+      "funding": null,
+      "press_council_member": false,
       "corrections_policy_url": null,
-      "ifcn_signatory": null,
+      "ifcn_signatory": false,
       "audience_lean": {
         "range": null,
         "evidence_url": null
       },
-      "evidence_urls": []
+      "evidence_urls": [],
+      "evidence": {
+        "owner": "https://en.wikipedia.org/wiki/Calcalist",
+        "owner_group": "https://en.wikipedia.org/wiki/Calcalist",
+        "press_council_member": "https://presscouncil.co.il/wp-content/uploads/2026/08/%D7%9E%D7%95%D7%A2%D7%A6%D7%AA-%D7%94%D7%A2%D7%99%D7%AA%D7%95%D7%A0%D7%95%D7%AA-%D7%A8%D7%A9%D7%99%D7%9E%D7%AA-%D7%97%D7%91%D7%A8%D7%95%D7%AA-%D7%95%D7%97%D7%91%D7%A8%D7%99-%D7%9E%D7%9C%D7%99%D7%90%D7%94-%D7%9E%D7%A8%D7%A5-26-1.pdf",
+        "ifcn_signatory": "https://ifcncodeofprinciples.poynter.org/signatories"
+      },
+      "profile_checked": "2026-10-09",
+      "profile_notes": "Same publisher group as ynet (Yedioth Ahronoth group). press_council_member=false: no Yedioth-group representative in March 2026 plenum list; Hebrew Wikipedia says Yedioth group is not a member."
     },
     {
       "id": "maariv",
@@ -65,16 +81,23 @@
         "אקטואליה"
       ],
       "owner_group": "azur",
-      "owner": "קבוצת אלי עזור (ג'רוזלם פוסט)",
-      "funding": "פרטי, פרסום",
+      "owner": "קבוצת ג'רוזלם פוסט (אלי עזור)",
+      "funding": null,
       "press_council_member": null,
       "corrections_policy_url": null,
-      "ifcn_signatory": null,
+      "ifcn_signatory": false,
       "audience_lean": {
         "range": null,
         "evidence_url": null
       },
-      "evidence_urls": []
+      "evidence_urls": [],
+      "evidence": {
+        "owner": "https://en.globes.co.il/en/article-court-approves-maariv-sale-to-jerusalem-post-1000930058",
+        "owner_group": "https://en.globes.co.il/en/article-court-approves-maariv-sale-to-jerusalem-post-1000930058",
+        "ifcn_signatory": "https://ifcncodeofprinciples.poynter.org/signatories"
+      },
+      "profile_checked": "2026-10-09",
+      "profile_notes": "Globes (2014): court approved sale of Ma'ariv to The Jerusalem Post, 'owned by publisher Eli Azur'. Press council: Hebrew Wikipedia lists 'קבוצת מעריב' as a member, but there is no Maariv representative in the council's own March 2026 plenum list -> conflicting, left null."
     },
     {
       "id": "jpost",
@@ -89,16 +112,23 @@
         "אקטואליה"
       ],
       "owner_group": "azur",
-      "owner": "קבוצת אלי עזור (ג'רוזלם פוסט)",
-      "funding": "פרטי, פרסום",
+      "owner": "קבוצת ג'רוזלם פוסט (אלי עזור)",
+      "funding": null,
       "press_council_member": null,
       "corrections_policy_url": null,
-      "ifcn_signatory": null,
+      "ifcn_signatory": false,
       "audience_lean": {
         "range": null,
         "evidence_url": null
       },
-      "evidence_urls": []
+      "evidence_urls": [],
+      "evidence": {
+        "owner": "https://en.globes.co.il/en/article-court-approves-maariv-sale-to-jerusalem-post-1000930058",
+        "owner_group": "https://en.globes.co.il/en/article-eli-azur-buying-walla-from-bezeq-1001342782",
+        "ifcn_signatory": "https://ifcncodeofprinciples.poynter.org/signatories"
+      },
+      "profile_checked": "2026-10-09",
+      "profile_notes": "Globes articles (2014 Maariv sale, 2020 Walla purchase) describe The Jerusalem Post as owned by Eli Azur. Not represented in the Israel Press Council plenum list (March 2026, presscouncil.co.il); membership status not otherwise confirmed, so left null."
     },
     {
       "id": "walla",
@@ -112,17 +142,24 @@
       "categories": [
         "אקטואליה"
       ],
-      "owner_group": "walla",
-      "owner": "לאמת: בעלות נוכחית",
-      "funding": "פרטי, פרסום",
+      "owner_group": "azur",
+      "owner": "קבוצת ג'רוזלם פוסט (אלי עזור)",
+      "funding": null,
       "press_council_member": null,
       "corrections_policy_url": null,
-      "ifcn_signatory": null,
+      "ifcn_signatory": false,
       "audience_lean": {
         "range": null,
         "evidence_url": null
       },
-      "evidence_urls": []
+      "evidence_urls": [],
+      "evidence": {
+        "owner": "https://en.globes.co.il/en/article-eli-azur-buying-walla-from-bezeq-1001342782",
+        "owner_group": "https://bcommunications.co.il/wp-content/uploads/2020/12/Immediate-Supplementary-Report-%E2%80%93-Completion-of-Sale-of-Walla.pdf",
+        "ifcn_signatory": "https://ifcncodeofprinciples.poynter.org/signatories"
+      },
+      "profile_checked": "2026-10-09",
+      "profile_notes": "Globes 15.9.2020 'Eli Azur buying Walla! from Bezeq'. Bezeq immediate report 27.12.2020: sale of all its holdings in Walla! completed; Walla no longer a Bezeq subsidiary (buyer The Jerusalem Post Ltd per Bezeq's 15.9.2020 report as summarised by Haaretz/MarketScreener). No later sale found in 2025-2026 searches. PROPOSED CHANGE: owner_group 'walla' -> 'azur' (same owner as maariv & jpost, so they must not count as independent). Not represented in the Israel Press Council plenum list (March 2026, presscouncil.co.il); membership status not otherwise confirmed, so left null."
     },
     {
       "id": "israelhayom",
@@ -138,15 +175,24 @@
       ],
       "owner_group": "adelson",
       "owner": "משפחת אדלסון",
-      "funding": "פרטי, עיתון חינמי",
-      "press_council_member": null,
+      "funding": "פרטי, עיתון חינמי לקוראים",
+      "press_council_member": true,
       "corrections_policy_url": null,
-      "ifcn_signatory": null,
+      "ifcn_signatory": false,
       "audience_lean": {
-        "range": null,
-        "evidence_url": null
+        "range": "center..center-right",
+        "evidence_url": "https://harris.uchicago.edu/files/gmm_jan20-guy_grossman.pdf"
       },
-      "evidence_urls": []
+      "evidence_urls": [],
+      "evidence": {
+        "owner": "https://en.wikipedia.org/wiki/Israel_Hayom",
+        "owner_group": "https://en.wikipedia.org/wiki/Israel_Hayom",
+        "funding": "https://www.israelhayom.com/about-us/",
+        "press_council_member": "https://presscouncil.co.il/wp-content/uploads/2026/08/%D7%9E%D7%95%D7%A2%D7%A6%D7%AA-%D7%94%D7%A2%D7%99%D7%AA%D7%95%D7%A0%D7%95%D7%AA-%D7%A8%D7%A9%D7%99%D7%9E%D7%AA-%D7%97%D7%91%D7%A8%D7%95%D7%AA-%D7%95%D7%97%D7%91%D7%A8%D7%99-%D7%9E%D7%9C%D7%99%D7%90%D7%94-%D7%9E%D7%A8%D7%A5-26-1.pdf",
+        "ifcn_signatory": "https://ifcncodeofprinciples.poynter.org/signatories"
+      },
+      "profile_checked": "2026-10-09",
+      "profile_notes": "Audience lean refers to readers of the PRINT newspaper in 2016 (same brand as the site), Jewish adults only, opt-in online panel with quotas; the paper was later published in the Journal of Politics (2022). Owner: English Wikipedia ('Owned by the family of Sheldon Adelson'; Miriam Adelson listed as publisher) - secondary source; a 2016 ToI report notes Adelson's attorney said Sheldon himself did not own it but a relative did. Funding: own About page says the paper is 'free of charge'. Press council: Israel Hayom has an editors/publishers representative (לחמנוביץ עמר) in March 2026 plenum list. Audience lean: IDI (May 2024, en.idi.org.il/articles/54235) gives Channel 12 reach but no per-channel camp breakdown (only says channels 11/12/13 have 'a similar distribution of the political camps', vs Channel 14's right-wing audience) -> null."
     },
     {
       "id": "makorrishon",
@@ -162,16 +208,23 @@
         "פוליטיקה"
       ],
       "owner_group": "adelson",
-      "owner": "משפחת אדלסון (לאמת)",
-      "funding": "פרטי",
+      "owner": "ישראל היום (משפחת אדלסון)",
+      "funding": null,
       "press_council_member": null,
       "corrections_policy_url": null,
-      "ifcn_signatory": null,
+      "ifcn_signatory": false,
       "audience_lean": {
         "range": null,
         "evidence_url": null
       },
-      "evidence_urls": []
+      "evidence_urls": [],
+      "evidence": {
+        "owner": "https://www.globes.co.il/news/article.aspx?did=1000928189",
+        "owner_group": "https://www.globes.co.il/news/article.aspx?did=1000928189",
+        "ifcn_signatory": "https://ifcncodeofprinciples.poynter.org/signatories"
+      },
+      "profile_checked": "2026-10-09",
+      "profile_notes": "Globes 30.3.2014: Jerusalem District Court approved sale of Makor Rishon and NRG to Israel Hayom (Adelson-owned), subject to Competition Authority approval. No later change found. Press council: no separate Makor Rishon representative in March 2026 plenum list (parent Israel Hayom is represented) -> null."
     },
     {
       "id": "haaretz",
@@ -187,16 +240,24 @@
         "פוליטיקה"
       ],
       "owner_group": "haaretz",
-      "owner": "קבוצת הארץ (משפחת שוקן ושותפים)",
-      "funding": "פרטי, מינויים",
-      "press_council_member": null,
+      "owner": "משפחת שוקן (75%) ולאוניד נבזלין (25%)",
+      "funding": null,
+      "press_council_member": true,
       "corrections_policy_url": null,
-      "ifcn_signatory": null,
+      "ifcn_signatory": false,
       "audience_lean": {
         "range": null,
         "evidence_url": null
       },
-      "evidence_urls": []
+      "evidence_urls": [],
+      "evidence": {
+        "owner": "https://web.archive.org/web/20210509033233/https://www.haaretz.com/shareholders-bought-haaretz-stock-owned-by-m-dumont-schauberg-1.8343399",
+        "owner_group": "https://web.archive.org/web/20210509033233/https://www.haaretz.com/shareholders-bought-haaretz-stock-owned-by-m-dumont-schauberg-1.8343399",
+        "press_council_member": "https://presscouncil.co.il/wp-content/uploads/2026/08/%D7%9E%D7%95%D7%A2%D7%A6%D7%AA-%D7%94%D7%A2%D7%99%D7%AA%D7%95%D7%A0%D7%95%D7%AA-%D7%A8%D7%A9%D7%99%D7%9E%D7%AA-%D7%97%D7%91%D7%A8%D7%95%D7%AA-%D7%95%D7%97%D7%91%D7%A8%D7%99-%D7%9E%D7%9C%D7%99%D7%90%D7%94-%D7%9E%D7%A8%D7%A5-26-1.pdf",
+        "ifcn_signatory": "https://ifcncodeofprinciples.poynter.org/signatories"
+      },
+      "profile_checked": "2026-10-09",
+      "profile_notes": "Owner: Haaretz management announcement 19.12.2019: after buying out M. DuMont Schauberg, shares 'held, via holding companies, by the Schocken family (75 percent) and Leonid Nevzlin (25 percent)'. No later change verified. Funding (subscriptions) not verified with a primary page. Press council: Amos Schocken and Aluf Benn (Haaretz) listed among editors/publishers in March 2026 plenum list."
     },
     {
       "id": "themarker",
@@ -212,16 +273,23 @@
         "צרכנות"
       ],
       "owner_group": "haaretz",
-      "owner": "קבוצת הארץ (משפחת שוקן ושותפים)",
-      "funding": "פרטי, מינויים",
+      "owner": "קבוצת הארץ (משפחת שוקן 75%, לאוניד נבזלין 25%)",
+      "funding": null,
       "press_council_member": null,
       "corrections_policy_url": null,
-      "ifcn_signatory": null,
+      "ifcn_signatory": false,
       "audience_lean": {
         "range": null,
         "evidence_url": null
       },
-      "evidence_urls": []
+      "evidence_urls": [],
+      "evidence": {
+        "owner": "https://web.archive.org/web/20210509033233/https://www.haaretz.com/shareholders-bought-haaretz-stock-owned-by-m-dumont-schauberg-1.8343399",
+        "owner_group": "https://en.wikipedia.org/wiki/Haaretz",
+        "ifcn_signatory": "https://ifcncodeofprinciples.poynter.org/signatories"
+      },
+      "profile_checked": "2026-10-09",
+      "profile_notes": "owner_group: Wikipedia describes TheMarker as Haaretz's business supplement (same publisher); the 2019 Haaretz shareholder announcement (75% Schocken / 25% Nevzlin) applies to the group. Press council: the plenum list names 'הארץ' only, so TheMarker's own membership is not explicitly stated -> null."
     },
     {
       "id": "globes",
@@ -236,16 +304,24 @@
         "כלכלה"
       ],
       "owner_group": "globes",
-      "owner": "גלובס (לאמת: משפחת פישמן)",
-      "funding": "פרטי",
-      "press_council_member": null,
+      "owner": "אלונה בר-און וענת אגמון (מוניטין-גלובס)",
+      "funding": null,
+      "press_council_member": false,
       "corrections_policy_url": null,
-      "ifcn_signatory": null,
+      "ifcn_signatory": true,
       "audience_lean": {
         "range": null,
         "evidence_url": null
       },
-      "evidence_urls": []
+      "evidence_urls": [],
+      "evidence": {
+        "owner": "https://www.globes.co.il/news/article.aspx?did=1001193423",
+        "owner_group": "https://www.globes.co.il/news/article.aspx?did=1001193423",
+        "press_council_member": "https://presscouncil.co.il/wp-content/uploads/2026/08/%D7%9E%D7%95%D7%A2%D7%A6%D7%AA-%D7%94%D7%A2%D7%99%D7%AA%D7%95%D7%A0%D7%95%D7%AA-%D7%A8%D7%A9%D7%99%D7%9E%D7%AA-%D7%97%D7%91%D7%A8%D7%95%D7%AA-%D7%95%D7%97%D7%91%D7%A8%D7%99-%D7%9E%D7%9C%D7%99%D7%90%D7%94-%D7%9E%D7%A8%D7%A5-26-1.pdf",
+        "ifcn_signatory": "https://ifcncodeofprinciples.poynter.org/profile/the-whistle"
+      },
+      "profile_checked": "2026-10-09",
+      "profile_notes": "Owner: Globes 2017 'עכשיו זה סופי: אלונה בר און וענת אגמון קיבלו לידיהן את השליטה בעיתון גלובס' (bought from receivers of Eliezer Fishman). NOT the Fishman family any more. No later change found. IFCN: 'The Whistle' (המשרוקית), owner org 'Globes Publisher Itonut LTD', website globes.co.il fid=10559, is a Verified Signatory (renewed 23.1.2025) per IFCN API data. Press council: no Globes rep in March 2026 plenum list; Hebrew Wikipedia says Globes management decided to leave the council in Nov/Dec 2020."
     },
     {
       "id": "n12",
@@ -260,16 +336,24 @@
         "אקטואליה"
       ],
       "owner_group": "keshet",
-      "owner": "קשת מדיה",
-      "funding": "פרטי, פרסום",
-      "press_council_member": null,
+      "owner": "קשת מדיה (באמצעות חברת החדשות הישראלית)",
+      "funding": null,
+      "press_council_member": true,
       "corrections_policy_url": null,
-      "ifcn_signatory": null,
+      "ifcn_signatory": false,
       "audience_lean": {
         "range": null,
         "evidence_url": null
       },
-      "evidence_urls": []
+      "evidence_urls": [],
+      "evidence": {
+        "owner": "https://en.wikipedia.org/wiki/Hevrat_HaHadashot",
+        "owner_group": "https://en.wikipedia.org/wiki/Hevrat_HaHadashot",
+        "press_council_member": "https://presscouncil.co.il/wp-content/uploads/2026/08/%D7%9E%D7%95%D7%A2%D7%A6%D7%AA-%D7%94%D7%A2%D7%99%D7%AA%D7%95%D7%A0%D7%95%D7%AA-%D7%A8%D7%A9%D7%99%D7%9E%D7%AA-%D7%97%D7%91%D7%A8%D7%95%D7%AA-%D7%95%D7%97%D7%91%D7%A8%D7%99-%D7%9E%D7%9C%D7%99%D7%90%D7%94-%D7%9E%D7%A8%D7%A5-26-1.pdf",
+        "ifcn_signatory": "https://ifcncodeofprinciples.poynter.org/signatories"
+      },
+      "profile_checked": "2026-10-09",
+      "profile_notes": "Owner: Wikipedia 'Hevrat HaHadashot': 'Keshet took full ownership of the company' after the Jan 2019 Reshet/Channel 10 merger; infobox lists n12.co.il as its website (secondary source). Press council: three representatives of 'החדשות 12' in March 2026 plenum list."
     },
     {
       "id": "kan",
@@ -284,16 +368,25 @@
         "אקטואליה"
       ],
       "owner_group": "kan",
-      "owner": "תאגיד השידור הישראלי",
-      "funding": "ציבורי",
-      "press_council_member": null,
+      "owner": "תאגיד השידור הישראלי (תאגיד סטטוטורי ציבורי, חוק השידור הציבורי 2014)",
+      "funding": "ציבורי: תקציב ממשלתי קבוע בחוק + אגרת רדיו לרכב",
+      "press_council_member": true,
       "corrections_policy_url": null,
-      "ifcn_signatory": null,
+      "ifcn_signatory": false,
       "audience_lean": {
         "range": null,
         "evidence_url": null
       },
-      "evidence_urls": []
+      "evidence_urls": [],
+      "evidence": {
+        "owner": "https://en.wikipedia.org/wiki/Israeli_Public_Broadcasting_Corporation",
+        "owner_group": "https://en.wikipedia.org/wiki/Israeli_Public_Broadcasting_Corporation",
+        "funding": "https://en.globes.co.il/en/article-bill-proposes-abolition-of-public-broadcasting-in-israel-1001494570",
+        "press_council_member": "https://presscouncil.co.il/wp-content/uploads/2026/08/%D7%9E%D7%95%D7%A2%D7%A6%D7%AA-%D7%94%D7%A2%D7%99%D7%AA%D7%95%D7%A0%D7%95%D7%AA-%D7%A8%D7%A9%D7%99%D7%9E%D7%AA-%D7%97%D7%91%D7%A8%D7%95%D7%AA-%D7%95%D7%97%D7%91%D7%A8%D7%99-%D7%9E%D7%9C%D7%99%D7%90%D7%94-%D7%9E%D7%A8%D7%A5-26-1.pdf",
+        "ifcn_signatory": "https://ifcncodeofprinciples.poynter.org/signatories"
+      },
+      "profile_checked": "2026-10-09",
+      "profile_notes": "Funding: Globes quotes a bill preamble: 'budget comprises two sources: a government budget fixed by law and linked to the Consumer Price Index; and a budget based on collecting a vehicle radio fee... NIS 800 million'. Pending bills (2025-2026) may change this. Press council: three representatives of 'כאן - תאגיד השידור' in March 2026 plenum list."
     },
     {
       "id": "davar",
@@ -309,16 +402,24 @@
         "כלכלה"
       ],
       "owner_group": "histadrut",
-      "owner": "ההסתדרות (לאמת)",
-      "funding": "ארגון עובדים",
-      "press_council_member": null,
+      "owner": "ההסתדרות",
+      "funding": null,
+      "press_council_member": true,
       "corrections_policy_url": null,
-      "ifcn_signatory": null,
+      "ifcn_signatory": false,
       "audience_lean": {
         "range": null,
         "evidence_url": null
       },
-      "evidence_urls": []
+      "evidence_urls": [],
+      "evidence": {
+        "owner": "https://www.davar1.co.il/about/",
+        "owner_group": "https://www.davar1.co.il/about/",
+        "press_council_member": "https://presscouncil.co.il/wp-content/uploads/2026/08/%D7%9E%D7%95%D7%A2%D7%A6%D7%AA-%D7%94%D7%A2%D7%99%D7%AA%D7%95%D7%A0%D7%95%D7%AA-%D7%A8%D7%A9%D7%99%D7%9E%D7%AA-%D7%97%D7%91%D7%A8%D7%95%D7%AA-%D7%95%D7%97%D7%91%D7%A8%D7%99-%D7%9E%D7%9C%D7%99%D7%90%D7%94-%D7%9E%D7%A8%D7%A5-26-1.pdf",
+        "ifcn_signatory": "https://ifcncodeofprinciples.poynter.org/signatories"
+      },
+      "profile_checked": "2026-10-09",
+      "profile_notes": "About page: 'בעלים: ההסתדרות'; publisher 'דבר העובדים בארץ ישראל בע\"מ'; says it is a member of the Press Council. Plenum list March 2026 includes two reps of 'דבר העובדים בישראל'. Funding not stated on the about page."
     },
     {
       "id": "inn",
@@ -334,16 +435,24 @@
         "פוליטיקה"
       ],
       "owner_group": "inn",
-      "owner": "לאמת: בעלות נוכחית",
-      "funding": "לאמת",
+      "owner": "ישראל נשיונל ניוז בע\"מ (רשת ערוץ 7)",
+      "funding": "פרטי, בסיוע עמותת ידידי ערוץ 7",
       "press_council_member": null,
       "corrections_policy_url": null,
-      "ifcn_signatory": null,
+      "ifcn_signatory": false,
       "audience_lean": {
         "range": null,
         "evidence_url": null
       },
-      "evidence_urls": []
+      "evidence_urls": [],
+      "evidence": {
+        "owner": "https://www.inn.co.il/about",
+        "owner_group": "https://www.inn.co.il/about",
+        "funding": "https://www.inn.co.il/about",
+        "ifcn_signatory": "https://ifcncodeofprinciples.poynter.org/signatories"
+      },
+      "profile_checked": "2026-10-09",
+      "profile_notes": "About page footer names the company 'ישראל נשיונל ניוז בע\"מ' and says 'ערוץ 7 פועל כיום בסיוע עמותת ידידי ערוץ 7'. Wikipedia links it historically to the Beit El yeshiva (founder Rabbi Zalman Melamed) - not confirmed on a primary page, so not used. Not represented in the Israel Press Council plenum list (March 2026, presscouncil.co.il); membership status not otherwise confirmed, so left null."
     },
     {
       "id": "zman",
@@ -358,16 +467,23 @@
         "אקטואליה"
       ],
       "owner_group": "toi",
-      "owner": "קבוצת טיימס אוף ישראל",
-      "funding": "פרטי",
+      "owner": "קבוצת טיימס אוף ישראל (מייסדים: דוד הורוביץ וסת' קלרמן)",
+      "funding": null,
       "press_council_member": null,
       "corrections_policy_url": null,
-      "ifcn_signatory": null,
+      "ifcn_signatory": false,
       "audience_lean": {
         "range": null,
         "evidence_url": null
       },
-      "evidence_urls": []
+      "evidence_urls": [],
+      "evidence": {
+        "owner": "https://web.archive.org/web/20241202172154/https://www.timesofisrael.com/clear-headed-journalism-this-time-in-hebrew-introducing-zman-yisrael/",
+        "owner_group": "https://web.archive.org/web/20241202172154/https://www.timesofisrael.com/clear-headed-journalism-this-time-in-hebrew-introducing-zman-yisrael/",
+        "ifcn_signatory": "https://ifcncodeofprinciples.poynter.org/signatories"
+      },
+      "profile_checked": "2026-10-09",
+      "profile_notes": "ToI's own launch article presents Zman Yisrael as its Hebrew sister site (alongside its French, Arabic and Persian sites). Wikipedia cites the7eye saying Zman Yisrael is jointly owned with Seth Klarman (the7eye page blocked, not verified). Not represented in the Israel Press Council plenum list (March 2026, presscouncil.co.il); membership status not otherwise confirmed, so left null."
     },
     {
       "id": "toi",
@@ -382,16 +498,24 @@
         "אקטואליה"
       ],
       "owner_group": "toi",
-      "owner": "קבוצת טיימס אוף ישראל",
-      "funding": "פרטי",
+      "owner": "קבוצת טיימס אוף ישראל (מייסדים: דוד הורוביץ וסת' קלרמן, יו\"ר ומשקיע)",
+      "funding": "פרטי: פרסום וחברות בקהילת קוראים",
       "press_council_member": null,
       "corrections_policy_url": null,
-      "ifcn_signatory": null,
+      "ifcn_signatory": false,
       "audience_lean": {
         "range": null,
         "evidence_url": null
       },
-      "evidence_urls": []
+      "evidence_urls": [],
+      "evidence": {
+        "owner": "https://web.archive.org/web/20241230211814/https://blogs.timesofisrael.com/a-note-from-the-chairman/",
+        "owner_group": "https://en.wikipedia.org/wiki/The_Times_of_Israel",
+        "funding": "https://web.archive.org/web/20241230211814/https://blogs.timesofisrael.com/a-note-from-the-chairman/",
+        "ifcn_signatory": "https://ifcncodeofprinciples.poynter.org/signatories"
+      },
+      "profile_checked": "2026-10-09",
+      "profile_notes": "Owner: Seth Klarman's blog 'A note from the chairman' says David Horovitz approached him 'to invest in The Times of Israel'; Wikipedia: co-founded by Horovitz and Klarman, Klarman is chairman. No ownership percentages published. Funding: site carries ads and a 'Join our Community - Support ToI and remove all ads' membership (seen on the page). Not represented in the Israel Press Council plenum list (March 2026, presscouncil.co.il); membership status not otherwise confirmed, so left null."
     },
     {
       "id": "arab48",
@@ -406,16 +530,21 @@
         "אקטואליה"
       ],
       "owner_group": "arab48",
-      "owner": "לאמת: בעלות",
-      "funding": "לאמת",
+      "owner": null,
+      "funding": null,
       "press_council_member": null,
       "corrections_policy_url": null,
-      "ifcn_signatory": null,
+      "ifcn_signatory": false,
       "audience_lean": {
         "range": null,
         "evidence_url": null
       },
-      "evidence_urls": []
+      "evidence_urls": [],
+      "evidence": {
+        "ifcn_signatory": "https://ifcncodeofprinciples.poynter.org/signatories"
+      },
+      "profile_checked": "2026-10-09",
+      "profile_notes": "Audience lean: no survey found. Owner/operator NOT found: arab48.com staff page ('طاقم العمل') and Play Store listing name no company; Arabic/English Wikipedia have no article on the site; searches returned nothing reliable. Left null. Not represented in the Israel Press Council plenum list (March 2026, presscouncil.co.il); membership status not otherwise confirmed, so left null."
     },
     {
       "id": "bbc",
@@ -430,16 +559,24 @@
         "עולם"
       ],
       "owner_group": "bbc",
-      "owner": "BBC",
-      "funding": "ציבורי (בריטניה)",
+      "owner": "BBC (תאגיד ציבורי בריטי)",
+      "funding": "ציבורי: אגרת רישיון בבריטניה, בתוספת הכנסות מסחריות (באתר הבינלאומי: פרסום דרך BBC Studios)",
       "press_council_member": null,
-      "corrections_policy_url": null,
-      "ifcn_signatory": null,
+      "corrections_policy_url": "https://www.bbc.co.uk/helpandfeedback/corrections_clarifications/",
+      "ifcn_signatory": false,
       "audience_lean": {
-        "range": null,
-        "evidence_url": null
+        "range": "center",
+        "evidence_url": "https://reutersinstitute.politics.ox.ac.uk/digital-news-report/2022/have-news-audiences-become-more-polarised-over-time"
       },
-      "evidence_urls": []
+      "evidence_urls": [],
+      "evidence": {
+        "owner": "https://www.bbc.com/aboutthebbc/governance/licencefee",
+        "owner_group": "https://www.bbc.com/aboutthebbc/governance/licencefee",
+        "funding": "https://www.bbc.com/aboutthebbc/whatwedo/worldservice",
+        "ifcn_signatory": "https://ifcncodeofprinciples.poynter.org/signatories"
+      },
+      "profile_checked": "2026-10-09",
+      "profile_notes": "press_council_member null: BBC is regulated by Ofcom, not a press council (IPSO/Impress) - concept doesn't apply. Audience lean: UK audience (Reuters Institute 2022, self-placement left-right). For comparison, among US audiences Pew 2020 groups BBC with 'left-leaning audience' outlets (42% liberal Dem vs 14% conservative Rep) - the UK figure was preferred as BBC's home market."
     },
     {
       "id": "bbcarabic",
@@ -454,16 +591,24 @@
         "עולם"
       ],
       "owner_group": "bbc",
-      "owner": "BBC",
-      "funding": "ציבורי (בריטניה)",
+      "owner": "BBC (שירות BBC World Service)",
+      "funding": "ציבורי: אגרת רישיון בבריטניה + מענק ממשרד החוץ הבריטי (FCDO)",
       "press_council_member": null,
-      "corrections_policy_url": null,
-      "ifcn_signatory": null,
+      "corrections_policy_url": "https://www.bbc.co.uk/helpandfeedback/corrections_clarifications/",
+      "ifcn_signatory": false,
       "audience_lean": {
         "range": null,
         "evidence_url": null
       },
-      "evidence_urls": []
+      "evidence_urls": [],
+      "evidence": {
+        "owner": "https://www.bbc.com/aboutthebbc/whatwedo/worldservice",
+        "owner_group": "https://www.bbc.com/aboutthebbc/whatwedo/worldservice",
+        "funding": "https://www.bbc.com/aboutthebbc/whatwedo/worldservice",
+        "ifcn_signatory": "https://ifcncodeofprinciples.poynter.org/signatories"
+      },
+      "profile_checked": "2026-10-09",
+      "profile_notes": "Same corporation as BBC News; corrections page is the BBC-wide page. No audience-lean survey specific to BBC Arabic found."
     },
     {
       "id": "guardian",
@@ -478,16 +623,25 @@
         "עולם"
       ],
       "owner_group": "guardian",
-      "owner": "Scott Trust",
-      "funding": "קרן ללא בעלי מניות, תרומות קוראים",
-      "press_council_member": null,
-      "corrections_policy_url": null,
-      "ifcn_signatory": null,
+      "owner": "Scott Trust Limited (בעלת המניות היחידה של Guardian Media Group)",
+      "funding": "ללא בעלי מניות מקבלי דיבידנד; הכנסות מקוראים (תמיכה ומינויים דיגיטליים), פרסום וקרן הקדש",
+      "press_council_member": false,
+      "corrections_policy_url": "https://www.theguardian.com/theguardian/series/corrections-and-clarifications",
+      "ifcn_signatory": false,
       "audience_lean": {
-        "range": null,
-        "evidence_url": null
+        "range": "center-left..left",
+        "evidence_url": "https://reutersinstitute.politics.ox.ac.uk/digital-news-report/2022/have-news-audiences-become-more-polarised-over-time"
       },
-      "evidence_urls": []
+      "evidence_urls": [],
+      "evidence": {
+        "owner": "https://uploads.guim.co.uk/2025/09/11/The_Scott_Trust_Limited_2024_25.pdf",
+        "owner_group": "https://uploads.guim.co.uk/2025/09/11/The_Scott_Trust_Limited_2024_25.pdf",
+        "funding": "https://uploads.guim.co.uk/2025/09/11/The_Scott_Trust_Limited_2024_25.pdf",
+        "press_council_member": "https://pressgazette.co.uk/media_law/i-signs-up-to-ipso-as-guardian-and-ft-continue-to-reject-press-regulation",
+        "ifcn_signatory": "https://ifcncodeofprinciples.poynter.org/signatories"
+      },
+      "profile_checked": "2026-10-09",
+      "profile_notes": "Owner: Scott Trust Limited annual report 2024/25: 'STL is the sole shareholder and ultimate owner of GMG'. Press regulation: Press Gazette (Nov 2016) - Guardian/Observer/FT 'have not joined any system of press regulation' (neither IPSO nor Impress); it uses an independent readers' editor with a review panel. Evidence is from 2016; no later change found. Audience lean: Reuters Institute 2022 (UK) gives direction only, no number; the 'center-left..left' span combines it with Pew 2020's US figure (left-leaning audience group)."
     },
     {
       "id": "nyt",
@@ -502,16 +656,23 @@
         "עולם"
       ],
       "owner_group": "nyt",
-      "owner": "The New York Times Company",
-      "funding": "פרטי, מינויים",
+      "owner": "The New York Times Company (נסחרת בבורסה; שליטה של משפחת אוקס-זולצברגר דרך מניות B)",
+      "funding": null,
       "press_council_member": null,
-      "corrections_policy_url": null,
-      "ifcn_signatory": null,
+      "corrections_policy_url": "https://www.nytimes.com/section/corrections",
+      "ifcn_signatory": false,
       "audience_lean": {
-        "range": null,
-        "evidence_url": null
+        "range": "center-left..left",
+        "evidence_url": "https://www.pewresearch.org/wp-content/uploads/sites/8/2020/01/PJ_2020.01.24_Media-Polarization_FINAL.pdf"
       },
-      "evidence_urls": []
+      "evidence_urls": [],
+      "evidence": {
+        "owner": "https://en.wikipedia.org/wiki/The_New_York_Times_Company",
+        "owner_group": "https://en.wikipedia.org/wiki/The_New_York_Times_Company",
+        "ifcn_signatory": "https://ifcncodeofprinciples.poynter.org/signatories"
+      },
+      "profile_checked": "2026-10-09",
+      "profile_notes": "Corrections page verified via Wayback snapshot 15.9.2026 (nytimes.com blocks direct fetch). press_council_member null: US has no national press council."
     },
     {
       "id": "fox",
@@ -527,15 +688,22 @@
       ],
       "owner_group": "fox",
       "owner": "Fox Corporation",
-      "funding": "פרטי, פרסום",
+      "funding": null,
       "press_council_member": null,
       "corrections_policy_url": null,
-      "ifcn_signatory": null,
+      "ifcn_signatory": false,
       "audience_lean": {
-        "range": null,
-        "evidence_url": null
+        "range": "center-right..right",
+        "evidence_url": "https://www.pewresearch.org/wp-content/uploads/sites/8/2020/01/PJ_2020.01.24_Media-Polarization_FINAL.pdf"
       },
-      "evidence_urls": []
+      "evidence_urls": [],
+      "evidence": {
+        "owner": "https://www.foxcorporation.com/",
+        "owner_group": "https://www.foxcorporation.com/",
+        "ifcn_signatory": "https://ifcncodeofprinciples.poynter.org/signatories"
+      },
+      "profile_checked": "2026-10-09",
+      "profile_notes": "Owner: Fox Corporation site lists 'FOX News Media' among its brands. Funding (commercial: ads + cable carriage fees) not verified with a page -> null. press_council_member null: US has no national press council. No corrections policy page found (foxnews.com/corrections 404)."
     },
     {
       "id": "npr",
@@ -550,16 +718,24 @@
         "עולם"
       ],
       "owner_group": "npr",
-      "owner": "NPR",
-      "funding": "ציבורי ללא כוונת רווח (ארה\"ב)",
+      "owner": "NPR (ארגון ללא כוונת רווח)",
+      "funding": "ללא כוונת רווח: תרומות מאזינים, חסויות ותחנות; הקונגרס ביטל את המימון הפדרלי לתקשורת ציבורית",
       "press_council_member": null,
-      "corrections_policy_url": null,
-      "ifcn_signatory": null,
+      "corrections_policy_url": "https://www.npr.org/corrections/",
+      "ifcn_signatory": false,
       "audience_lean": {
-        "range": null,
-        "evidence_url": null
+        "range": "center-left..left",
+        "evidence_url": "https://www.pewresearch.org/wp-content/uploads/sites/8/2020/01/PJ_2020.01.24_Media-Polarization_FINAL.pdf"
       },
-      "evidence_urls": []
+      "evidence_urls": [],
+      "evidence": {
+        "owner": "https://www.npr.org/about-npr/178660742/public-radio-finances",
+        "owner_group": "https://www.npr.org/about-npr/178660742/public-radio-finances",
+        "funding": "https://www.npr.org/about-npr/178660742/public-radio-finances",
+        "ifcn_signatory": "https://ifcncodeofprinciples.poynter.org/signatories"
+      },
+      "profile_checked": "2026-10-09",
+      "profile_notes": "Funding: NPR 'Public Radio Finances' page says 'Congress has passed a rescission bill to claw back funding for public media' and describes the mix of federal funding and listener support (past tense for federal). press_council_member null: US has no national press council."
     },
     {
       "id": "aljazeera",
@@ -574,16 +750,24 @@
         "עולם"
       ],
       "owner_group": "aljazeera",
-      "owner": "רשת אל ג'זירה",
-      "funding": "מימון ממשלת קטאר",
+      "owner": "רשת אל ג'זירה (Al Jazeera Media Network)",
+      "funding": "ממומן בחלקו ע\"י ממשלת קטאר",
       "press_council_member": null,
       "corrections_policy_url": null,
-      "ifcn_signatory": null,
+      "ifcn_signatory": false,
       "audience_lean": {
         "range": null,
         "evidence_url": null
       },
-      "evidence_urls": []
+      "evidence_urls": [],
+      "evidence": {
+        "owner": "https://en.wikipedia.org/wiki/Al_Jazeera_English",
+        "owner_group": "https://en.wikipedia.org/wiki/Al_Jazeera_English",
+        "funding": "https://en.wikipedia.org/wiki/Al_Jazeera_English",
+        "ifcn_signatory": "https://ifcncodeofprinciples.poynter.org/signatories"
+      },
+      "profile_checked": "2026-10-09",
+      "profile_notes": "Owner/funding from English Wikipedia (secondary): network 'partially funded by the government of Qatar'; launched 'with an investment of approximately $1 billion from the Qatari government'. aljazeera.com was unreachable from this environment (DNS/connection errors), so its code of ethics (which includes a commitment to 'acknowledge a mistake... promptly correct it', per search snippets) could not be fetched -> corrections_policy_url null. press_council_member null: not applicable (Qatar). Not an IFCN signatory (checked list)."
     },
     {
       "id": "dw",
@@ -598,16 +782,24 @@
         "עולם"
       ],
       "owner_group": "dw",
-      "owner": "Deutsche Welle",
-      "funding": "מימון ממשלתי (גרמניה)",
+      "owner": "דויטשה וולה (שדרן ציבורי לפי חוק פדרלי גרמני)",
+      "funding": "ציבורי: מענקים מהתקציב הפדרלי של גרמניה (ממסים)",
       "press_council_member": null,
       "corrections_policy_url": null,
-      "ifcn_signatory": null,
+      "ifcn_signatory": true,
       "audience_lean": {
         "range": null,
         "evidence_url": null
       },
-      "evidence_urls": []
+      "evidence_urls": [],
+      "evidence": {
+        "owner": "https://en.wikipedia.org/wiki/Deutsche_Welle",
+        "owner_group": "https://en.wikipedia.org/wiki/Deutsche_Welle",
+        "funding": "https://en.wikipedia.org/wiki/Deutsche_Welle",
+        "ifcn_signatory": "https://ifcncodeofprinciples.poynter.org/profile/deutsche-welle"
+      },
+      "profile_checked": "2026-10-09",
+      "profile_notes": "IFCN: 'Deutsche Welle' (DW Fact check, dw.com/factcheck) is a Verified Signatory, renewed 15.9.2026, per IFCN API data."
     },
     {
       "id": "france24",
@@ -622,16 +814,24 @@
         "עולם"
       ],
       "owner_group": "fmm",
-      "owner": "France Médias Monde",
-      "funding": "בבעלות ממשלתית (צרפת)",
+      "owner": "France Médias Monde (קבוצת שידור ציבורית צרפתית)",
+      "funding": "ציבורי: חלק מהכנסות מע\"מ בצרפת",
       "press_council_member": null,
       "corrections_policy_url": null,
-      "ifcn_signatory": null,
+      "ifcn_signatory": true,
       "audience_lean": {
         "range": null,
         "evidence_url": null
       },
-      "evidence_urls": []
+      "evidence_urls": [],
+      "evidence": {
+        "owner": "https://www.francemediasmonde.com/en/the-group/financing/",
+        "owner_group": "https://www.francemediasmonde.com/en/the-group/financing/",
+        "funding": "https://www.francemediasmonde.com/en/the-group/financing/",
+        "ifcn_signatory": "https://ifcncodeofprinciples.poynter.org/profile/france-24-les-observateurs"
+      },
+      "profile_checked": "2026-10-09",
+      "profile_notes": "IFCN: 'France 24 - Les Observateurs' (observers.france24.com, French-language unit) is a Verified Signatory (approved 5.12.2024) per IFCN API data; the English feed itself is not a separate signatory."
     }
   ]
 }

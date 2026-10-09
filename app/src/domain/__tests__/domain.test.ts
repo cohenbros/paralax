@@ -37,7 +37,7 @@ const story = (over: Partial<Story> = {}): Story => ({
 const profile = (id: string, range: string | null, owner_group = id, language = "he"): SourceProfile => ({
   id, name: id, site: "https://x.com", language, region: "il", owner_group, owner: null, funding: null,
   press_council_member: null, corrections_policy_url: null, ifcn_signatory: null,
-  audience_lean: { range, evidence_url: null }, evidence_urls: [],
+  audience_lean: { range, evidence_url: null }, evidence: {}, evidence_urls: [],
 });
 
 describe("parseLatest", () => {

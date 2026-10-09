@@ -50,6 +50,8 @@ export const strings = {
     ifcn: "חתום על קוד העקרונות של IFCN",
     audienceLean: "נטיית קהל",
     evidence: "מקורות למידע",
+    evidenceLink: "מקור",
+    leanNote: "נטיית הקהל: מי קורא את כלי התקשורת, לפי סקר או מחקר. לא קביעה על התוכן.",
     unknown: "עדיין לא נבדק",
     yes: "כן",
     no: "לא",

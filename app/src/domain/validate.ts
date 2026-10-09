@@ -2,7 +2,7 @@
 // רשומה פגומה נזרקת; קובץ בגרסה לא מוכרת נדחה כולו.
 
 import { isSafeHttpUrl } from "./links";
-import { DATA_VERSION, type Item, type Latest, type Quote, type Region, type SourceProfile, type Story } from "./types";
+import { DATA_VERSION, EVIDENCE_FIELDS, type EvidenceField, type Item, type Latest, type Quote, type Region, type SourceProfile, type Story } from "./types";
 
 type Obj = Record<string, unknown>;
 const isObj = (v: unknown): v is Obj => typeof v === "object" && v !== null && !Array.isArray(v);
@@ -72,6 +72,16 @@ export function parseLatest(raw: unknown): Latest {
   };
 }
 
+function parseEvidence(v: unknown): Partial<Record<EvidenceField, string>> {
+  if (!isObj(v)) return {};
+  const out: Partial<Record<EvidenceField, string>> = {};
+  for (const f of EVIDENCE_FIELDS) {
+    const url = v[f];
+    if (isSafeHttpUrl(url)) out[f] = url;
+  }
+  return out;
+}
+
 function parseSource(v: unknown): SourceProfile | null {
   if (!isObj(v) || !str(v.id) || !str(v.name) || !isSafeHttpUrl(v.site)) return null;
   const lean = isObj(v.audience_lean) ? v.audience_lean : {};
@@ -93,6 +103,7 @@ function parseSource(v: unknown): SourceProfile | null {
       range: strOrNull(lean.range),
       evidence_url: isSafeHttpUrl(leanEvidence) ? leanEvidence : null,
     },
+    evidence: parseEvidence(v.evidence),
     evidence_urls: Array.isArray(v.evidence_urls) ? v.evidence_urls.filter(isSafeHttpUrl) : [],
   };
 }

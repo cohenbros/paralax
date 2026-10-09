@@ -18,7 +18,11 @@ export type Source = {
   corrections_policy_url: string | null;
   ifcn_signatory: boolean | null;
   audience_lean: { range: string | null; evidence_url: string | null };
+  // קישור לראיה לכל שדה בפרופיל (owner, funding, press_council_member, ifcn_signatory...)
+  evidence?: Record<string, string>;
   evidence_urls: string[];
+  profile_checked?: string;
+  profile_notes?: string | null; // פנימי, לא מתפרסם
 };
 
 // ידיעה כפי שנקראה מהפיד, לפני נרמול
