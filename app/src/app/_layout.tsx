@@ -1,0 +1,70 @@
+import { Stack, useRouter } from "expo-router";
+import { StatusBar } from "expo-status-bar";
+import { I18nManager, Pressable, StyleSheet, View } from "react-native";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import { NewsProvider } from "@/state/NewsProvider";
+import { PreferencesProvider, usePreferences } from "@/state/PreferencesProvider";
+import { AppText } from "@/ui/components/AppText";
+import { strings } from "@/ui/strings";
+import { useColors } from "@/ui/theme";
+
+// בגרסה בנויה RTL נכפה ע"י expo-localization (app.json). ב-Expo Go (SDK 57) לא, ולכן הכיוון נקבע גם בשורש.
+// left/right בסגנונות לא מתהפכים: textAlign: "right" תמיד ימין.
+I18nManager.swapLeftAndRightInRTL(false);
+
+function SettingsButton() {
+  const router = useRouter();
+  return (
+    <Pressable onPress={() => router.push("/settings")} accessibilityRole="button" hitSlop={12}>
+      <AppText variant="label" tone="accent">
+        {strings.settingsTitle}
+      </AppText>
+    </Pressable>
+  );
+}
+
+function AppStack() {
+  const colors = useColors();
+  const { ready } = usePreferences();
+  // עד שההעדפות נטענו לא מציגים כלום (מונע הבהוב של מסך ההיכרות)
+  if (!ready) return <View style={{ flex: 1, backgroundColor: colors.background }} />;
+  return (
+    <Stack
+      screenOptions={{
+        headerStyle: { backgroundColor: colors.surface },
+        headerTintColor: colors.text,
+        headerTitleAlign: "center",
+        contentStyle: { backgroundColor: colors.background },
+        // העדפות נגישות מכל מסך (CLAUDE.md)
+        headerRight: () => <SettingsButton />,
+      }}
+    >
+      <Stack.Screen name="index" options={{ title: strings.appName }} />
+      <Stack.Screen name="onboarding" options={{ headerShown: false }} />
+      <Stack.Screen name="story/[id]" options={{ title: "" }} />
+      <Stack.Screen name="source/[id]" options={{ title: "" }} />
+      <Stack.Screen name="settings/index" options={{ title: strings.settingsTitle, headerRight: () => null }} />
+      <Stack.Screen name="settings/methodology" options={{ title: "", headerRight: () => null }} />
+      <Stack.Screen name="settings/privacy" options={{ title: "", headerRight: () => null }} />
+    </Stack>
+  );
+}
+
+export default function RootLayout() {
+  return (
+    <SafeAreaProvider>
+      <View style={styles.root}>
+        <PreferencesProvider>
+          <NewsProvider>
+            <StatusBar style="auto" />
+            <AppStack />
+          </NewsProvider>
+        </PreferencesProvider>
+      </View>
+    </SafeAreaProvider>
+  );
+}
+
+const styles = StyleSheet.create({
+  root: { flex: 1, direction: "rtl" },
+});
