@@ -1,8 +1,11 @@
-import { ALL, availableCategories, selectFeed, verificationLabel } from "../feed";
+import { geminiPrompt, itemText } from "../display";
+import { ALL, availableCategories, selectFeed } from "../feed";
+import { coverage, leanBucket, leanPosition, sortByLean } from "../lean";
+import { storySignals } from "../signals";
 import { isSafeHttpUrl } from "../links";
 import { DEFAULT_PREFERENCES, parsePreferences, type Preferences } from "../preferences";
 import { relativeTime } from "../time";
-import type { Story } from "../types";
+import type { SourceProfile, Story } from "../types";
 import { DataFormatError, parseLatest, parseSources } from "../validate";
 
 const item = (over: Record<string, unknown> = {}) => ({
@@ -26,8 +29,15 @@ const story = (over: Partial<Story> = {}): Story => ({
   updated: "2026-10-09T10:00:00.000Z",
   independent_sources: 1,
   regions: ["il"],
+  quotes: [],
   items: [item()],
   ...over,
+});
+
+const profile = (id: string, range: string | null, owner_group = id, language = "he"): SourceProfile => ({
+  id, name: id, site: "https://x.com", language, region: "il", owner_group, owner: null, funding: null,
+  press_council_member: null, corrections_policy_url: null, ifcn_signatory: null,
+  audience_lean: { range, evidence_url: null }, evidence_urls: [],
 });
 
 describe("parseLatest", () => {
@@ -101,10 +111,87 @@ describe("selectFeed", () => {
   });
 });
 
-describe("verificationLabel", () => {
-  it("uses factual wording", () => {
-    expect(verificationLabel(story({ independent_sources: 3 }))).toBe('דווח ע"י 3 מקורות בלתי תלויים');
-    expect(verificationLabel(story())).toBe("עד עכשיו דיווח רק מקור אחד");
+describe("lean", () => {
+  it("parses points and ranges", () => {
+    expect(leanPosition("left")).toBe(0);
+    expect(leanPosition("center-left..center")).toBe(1.5);
+    expect(leanPosition("right")).toBe(4);
+    expect(leanPosition("far-right")).toBeNull();
+    expect(leanPosition(null)).toBeNull();
+  });
+
+  it("buckets: center-left is left, a center-left..center range is center", () => {
+    expect(leanBucket(profile("a", "center-left"))).toBe("left");
+    expect(leanBucket(profile("a", "center-left..center"))).toBe("center");
+    expect(leanBucket(profile("a", "center-right"))).toBe("right");
+    expect(leanBucket(undefined)).toBe("unknown");
+  });
+
+  it("coverage counts each owner once", () => {
+    const sources = { a: profile("a", "left", "g1"), b: profile("b", "left", "g1"), c: profile("c", "right"), d: profile("d", null) };
+    const s = story({ items: ["a", "b", "c", "d"].map((src, i) => item({ id: "i" + i, source: src })) as Story["items"] });
+    expect(coverage(s, sources)).toEqual({ left: 1, center: 0, right: 1, unknown: 1, total: 3, known: 2 });
+  });
+
+  it("sortByLean: right first, unknown last", () => {
+    const sources: Record<string, SourceProfile> = { l: profile("l", "left"), r: profile("r", "right"), u: profile("u", null) };
+    expect(sortByLean(["u", "l", "r"], (x) => sources[x]!)).toEqual(["r", "l", "u"]);
+  });
+});
+
+describe("storySignals", () => {
+  const now = Date.parse("2026-10-09T12:00:00Z");
+  const sources = { a: profile("a", "left"), b: profile("b", "right"), c: profile("c", "center") };
+
+  it("always includes the source count", () => {
+    expect(storySignals(story(), {}, now)).toEqual([{ kind: "sources", count: 1 }]);
+  });
+
+  it("wide coverage across the spectrum, unconfirmed, opinion, international", () => {
+    const s = story({
+      independent_sources: 2,
+      regions: ["il", "world"],
+      items: [
+        item({ id: "1", source: "a", hedged: true, opinion: true }),
+        item({ id: "2", source: "b", hedged: true }),
+      ] as Story["items"],
+    });
+    const kinds = storySignals(s, sources, now).map((x) => x.kind);
+    expect(kinds).toEqual(["sources", "spectrum", "unconfirmed", "opinion", "international"]);
+    const spectrum = storySignals(s, sources, now).find((x) => x.kind === "spectrum");
+    expect(spectrum).toMatchObject({ spread: "wide" });
+  });
+
+  it("one-sided coverage", () => {
+    const s = story({ items: [item({ id: "1", source: "a" }), item({ id: "2", source: "a2" })] as Story["items"] });
+    const src = { a: profile("a", "left"), a2: profile("a2", "center-left") };
+    expect(storySignals(s, src, now).find((x) => x.kind === "spectrum")).toMatchObject({ spread: "one-sided" });
+  });
+
+  it("developing: two new sources in the last 3 hours on an older story", () => {
+    const s = story({
+      items: [
+        item({ id: "1", source: "a", published: "2026-10-09T05:00:00Z" }),
+        item({ id: "2", source: "b", published: "2026-10-09T11:00:00Z" }),
+        item({ id: "3", source: "c", published: "2026-10-09T11:30:00Z" }),
+      ] as Story["items"],
+    });
+    expect(storySignals(s, sources, now).find((x) => x.kind === "developing")).toEqual({ kind: "developing", newSources: 2 });
+  });
+});
+
+describe("display", () => {
+  it("shows the Hebrew translation of a foreign item, marked as AI", () => {
+    const en = profile("bbc", null, "bbc", "en");
+    const t = itemText(item({ title: "Hello", title_he: "שלום", summary_he: "" }) as Story["items"][number], en);
+    expect(t).toMatchObject({ title: "שלום", lang: "he", ai: true, originalTitle: "Hello" });
+    expect(itemText(item() as Story["items"][number], profile("ynet", null)).ai).toBe(false);
+  });
+
+  it("geminiPrompt includes the question, title and link", () => {
+    const p = geminiPrompt("כותרת", "https://x.com/a", "מה הרקע?");
+    expect(p).toContain("מה הרקע?");
+    expect(p).toContain("https://x.com/a");
   });
 });
 

@@ -1,13 +1,15 @@
 import { Stack } from "expo-router";
 import { StyleSheet, View } from "react-native";
+import { leanBucket } from "@/domain/lean";
 import { useSources } from "@/state/NewsProvider";
 import { AppText } from "../components/AppText";
 import { LinkRow } from "../components/LinkRow";
 import { Screen } from "../components/Screen";
 import { Section } from "../components/Section";
 import { openLink } from "../openLink";
+import { leanLabel } from "../signalText";
 import { strings } from "../strings";
-import { spacing } from "../theme";
+import { LEAN_COLORS, spacing } from "../theme";
 
 const s = strings.source;
 
@@ -55,7 +57,10 @@ export function SourceScreen({ id }: { id: string }) {
         </View>
         <View style={styles.field}>
           <AppText variant="label">{s.audienceLean}</AppText>
-          <AppText tone={lean.range ? "text" : "muted"}>{lean.range ?? s.unknown}</AppText>
+          <View style={styles.row}>
+            <View style={[styles.dot, { backgroundColor: LEAN_COLORS[leanBucket(source)] }]} />
+            <AppText tone={lean.range ? "text" : "muted"}>{lean.range ? leanLabel(lean.range) : s.unknown}</AppText>
+          </View>
           {lean.evidence_url ? <LinkRow label={s.evidence} onPress={() => openLink(lean.evidence_url!)} /> : null}
         </View>
       </Section>
@@ -77,4 +82,6 @@ export function SourceScreen({ id }: { id: string }) {
 
 const styles = StyleSheet.create({
   field: { gap: 2, paddingVertical: spacing.xs },
+  row: { flexDirection: "row", alignItems: "center", gap: spacing.sm },
+  dot: { width: 12, height: 12, borderRadius: 6 },
 });

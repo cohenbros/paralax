@@ -4,7 +4,7 @@ import { I18nManager, Pressable, StyleSheet, View } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { NewsProvider } from "@/state/NewsProvider";
 import { PreferencesProvider, usePreferences } from "@/state/PreferencesProvider";
-import { AppText } from "@/ui/components/AppText";
+import { Icon } from "@/ui/components/Icon";
 import { strings } from "@/ui/strings";
 import { useColors } from "@/ui/theme";
 
@@ -14,11 +14,15 @@ I18nManager.swapLeftAndRightInRTL(false);
 
 function SettingsButton() {
   const router = useRouter();
+  const colors = useColors();
   return (
-    <Pressable onPress={() => router.push("/settings")} accessibilityRole="button" hitSlop={12}>
-      <AppText variant="label" tone="accent">
-        {strings.settingsTitle}
-      </AppText>
+    <Pressable
+      onPress={() => router.push("/settings")}
+      accessibilityRole="button"
+      accessibilityLabel={strings.settingsTitle}
+      hitSlop={12}
+    >
+      <Icon name="options-outline" size={22} color={colors.onHeader} />
     </Pressable>
   );
 }
@@ -31,8 +35,10 @@ function AppStack() {
   return (
     <Stack
       screenOptions={{
-        headerStyle: { backgroundColor: colors.surface },
-        headerTintColor: colors.text,
+        headerStyle: { backgroundColor: colors.header },
+        headerTintColor: colors.onHeader,
+        headerTitleStyle: { fontWeight: "800" },
+        headerShadowVisible: false,
         headerTitleAlign: "center",
         contentStyle: { backgroundColor: colors.background },
         // העדפות נגישות מכל מסך (CLAUDE.md)
@@ -56,7 +62,7 @@ export default function RootLayout() {
       <View style={styles.root}>
         <PreferencesProvider>
           <NewsProvider>
-            <StatusBar style="auto" />
+            <StatusBar style="light" />
             <AppStack />
           </NewsProvider>
         </PreferencesProvider>

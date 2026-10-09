@@ -2,10 +2,11 @@ import { Pressable, StyleSheet } from "react-native";
 import { radius, spacing, useColors } from "../theme";
 import { AppText } from "./AppText";
 
-type Props = { label: string; selected: boolean; onPress: () => void };
+type Props = { label: string; selected: boolean; onPress: () => void; color?: string };
 
-export function Chip({ label, selected, onPress }: Props) {
+export function Chip({ label, selected, onPress, color }: Props) {
   const colors = useColors();
+  const active = color ?? colors.accent;
   return (
     <Pressable
       onPress={onPress}
@@ -13,10 +14,10 @@ export function Chip({ label, selected, onPress }: Props) {
       accessibilityState={{ selected }}
       style={[
         styles.chip,
-        { borderColor: selected ? colors.accent : colors.border, backgroundColor: selected ? colors.accent : colors.surface },
+        { borderColor: selected ? active : colors.border, backgroundColor: selected ? active : colors.surface },
       ]}
     >
-      <AppText variant="label" tone={selected ? "onAccent" : "text"}>
+      <AppText variant="label" tone="text" style={selected ? { color: color ? "#FFFFFF" : colors.onAccent } : undefined}>
         {label}
       </AppText>
     </Pressable>

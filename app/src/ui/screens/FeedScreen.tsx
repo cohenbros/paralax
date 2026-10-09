@@ -32,8 +32,10 @@ export function FeedScreen() {
 
   const openStory = useCallback((id: string) => router.push({ pathname: "/story/[id]", params: { id } }), [router]);
   const renderItem = useCallback(
-    ({ item }: { item: Story }) => <StoryCard story={item} sources={sources} onPress={openStory} />,
-    [sources, openStory],
+    ({ item, index }: { item: Story; index: number }) => (
+      <StoryCard story={item} sources={sources} onPress={openStory} hero={index === 0 && activeFilter === ALL} />
+    ),
+    [sources, openStory, activeFilter],
   );
 
   if (loading && !snapshot) {

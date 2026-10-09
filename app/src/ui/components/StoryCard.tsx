@@ -1,53 +1,62 @@
-import { memo } from "react";
+import { memo, useMemo } from "react";
 import { Pressable, StyleSheet, View } from "react-native";
-import { isSponsoredStory, verificationLabel } from "@/domain/feed";
+import { storySignals } from "@/domain/signals";
 import { relativeTime } from "@/domain/time";
 import type { SourceProfile, Story } from "@/domain/types";
-import { strings } from "../strings";
-import { radius, spacing, useColors } from "../theme";
+import { signalView } from "../signalText";
+import { categoryColor, radius, spacing, useColors } from "../theme";
+import { AiMark } from "./AiMark";
 import { AppText } from "./AppText";
-import { Badge } from "./Badge";
+import { CategoryPill } from "./CategoryPill";
+import { SignalTag } from "./SignalTag";
+import { SpectrumBar } from "./SpectrumBar";
 
-type Props = { story: Story; sources: Record<string, SourceProfile>; onPress: (id: string) => void };
+type Props = {
+  story: Story;
+  sources: Record<string, SourceProfile>;
+  onPress: (id: string) => void;
+  hero?: boolean; // הכרטיס הראשון בפיד: גדול יותר, עם תקציר קצר
+};
 
-const MAX_SOURCE_NAMES = 3;
-
-function sourceNames(story: Story, sources: Record<string, SourceProfile>): string {
-  const names = [...new Set(story.items.map((i) => sources[i.source]?.name ?? i.source))];
-  const shown = names.slice(0, MAX_SOURCE_NAMES).join(" · ");
-  return names.length > MAX_SOURCE_NAMES ? `${shown} +${names.length - MAX_SOURCE_NAMES}` : shown;
-}
-
-// כרטיס לכל אירוע (לא לכל כתבה), עם סימני האמינות
-export const StoryCard = memo(function StoryCard({ story, sources, onPress }: Props) {
+// כרטיס לכל אירוע (לא לכל כתבה): כותרת, פס קשת וסימנים קטנים. בלי תקציר, כדי שיהיה קל לסרוק.
+export const StoryCard = memo(function StoryCard({ story, sources, onPress, hero = false }: Props) {
   const colors = useColors();
-  const multi = story.independent_sources > 1;
+  const signals = useMemo(() => storySignals(story, sources), [story, sources]);
+  const spectrum = signals.find((s) => s.kind === "spectrum");
+
   return (
     <Pressable
       onPress={() => onPress(story.id)}
       accessibilityRole="button"
       style={({ pressed }) => [
         styles.card,
-        { backgroundColor: colors.surface, borderColor: colors.border, opacity: pressed ? 0.85 : 1 },
+        hero && { borderTopWidth: 5, borderTopColor: categoryColor(story.category) },
+        { backgroundColor: colors.surface, opacity: pressed ? 0.85 : 1 },
       ]}
     >
-      <AppText variant="caption" tone="muted">
-        {story.category} · {relativeTime(story.updated)} · {strings.feed.articlesCount(story.items.length)}
-      </AppText>
-      <AppText variant="heading" lang={story.lang}>
+      <View style={styles.row}>
+        <CategoryPill category={story.category} />
+        <AppText variant="caption" tone="muted">
+          {relativeTime(story.updated)}
+        </AppText>
+        {story.title_ai ? <AiMark /> : null}
+      </View>
+
+      <AppText variant={hero ? "hero" : "heading"} lang={story.lang}>
         {story.title}
       </AppText>
-      {story.summary ? (
-        <AppText tone="muted" lang={story.lang} numberOfLines={3}>
+      {hero && story.summary ? (
+        <AppText tone="muted" lang={story.lang} numberOfLines={2}>
           {story.summary}
         </AppText>
       ) : null}
-      <AppText variant="caption" tone="muted">
-        {sourceNames(story, sources)}
-      </AppText>
-      <View style={styles.badges}>
-        <Badge label={verificationLabel(story)} tone={multi ? "info" : "neutral"} />
-        {isSponsoredStory(story) ? <Badge label={strings.story.sponsored} tone="notice" /> : null}
+
+      {spectrum?.kind === "spectrum" ? <SpectrumBar coverage={spectrum.coverage} /> : null}
+
+      <View style={styles.tags}>
+        {signals.map((s) => (
+          <SignalTag key={s.kind} view={signalView(s)} />
+        ))}
       </View>
     </Pressable>
   );
@@ -57,8 +66,13 @@ const styles = StyleSheet.create({
   card: {
     padding: spacing.lg,
     borderRadius: radius.md,
-    borderWidth: StyleSheet.hairlineWidth,
     gap: spacing.sm,
+    elevation: 1,
+    shadowColor: "#000",
+    shadowOpacity: 0.06,
+    shadowRadius: 6,
+    shadowOffset: { width: 0, height: 2 },
   },
-  badges: { flexDirection: "row", flexWrap: "wrap", gap: spacing.sm },
+  row: { flexDirection: "row", alignItems: "center", gap: spacing.sm },
+  tags: { flexDirection: "row", flexWrap: "wrap", gap: spacing.xs },
 });

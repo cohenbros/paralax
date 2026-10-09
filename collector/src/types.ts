@@ -1,3 +1,5 @@
+import type { Quote } from "./quotes.ts";
+
 // מבנה sources.json (ראו CLAUDE.md)
 export type Source = {
   id: string;
@@ -39,17 +41,24 @@ export type Item = {
   published: string; // ISO
   category: string;
   sponsored: boolean;
+  // תרגום AI לעברית, רק לידיעות שאינן בעברית
+  title_he?: string;
+  summary_he?: string;
+  opinion?: true; // טור דעה
+  hedged?: true; // נשען על דיווח לא מאושר ("לפי דיווח", "reportedly")
 };
 
 export type Story = {
   id: string;
-  lang: string;
+  lang: string; // שפת הכותרת המוצגת
+  title_ai?: true; // הכותרת והתקציר תורגמו ע"י AI
   category: string;
   title: string;
   summary: string;
   updated: string; // הידיעה האחרונה בקבוצה
   independent_sources: number; // מספר בעלים שונים
   regions: ("il" | "world")[];
+  quotes?: Quote[];
   items: Item[];
 };
 

@@ -10,3 +10,6 @@ export const MAX_RESPONSE_BYTES = 5 * 1024 * 1024;
 export const MIN_REFRESH_INTERVAL_MS = 60_000;
 
 export const CONTACT_URL = "https://github.com/cohenbros/paralax/issues";
+
+// "דווח על טעות": issue חדש במאגר, עם פרטי הידיעה ממולאים מראש
+export const REPORT_ISSUE_URL = "https://github.com/cohenbros/paralax/issues/new";

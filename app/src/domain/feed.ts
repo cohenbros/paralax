@@ -25,16 +25,6 @@ export function availableCategories(stories: Story[], prefs: Preferences): Categ
   return prefs.interests.filter((c) => present.has(c));
 }
 
-export function isSponsoredStory(story: Story): boolean {
-  return story.items.some((i) => i.sponsored);
-}
-
-// ניסוח עובדתי בלבד (CLAUDE.md, "סימני אמינות")
-export function verificationLabel(story: Story): string {
-  const n = story.independent_sources;
-  return n > 1 ? `דווח ע"י ${n} מקורות בלתי תלויים` : "עד עכשיו דיווח רק מקור אחד";
-}
-
 export function isRtlLanguage(lang: string): boolean {
   return lang === "he" || lang === "ar";
 }

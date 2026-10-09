@@ -28,17 +28,27 @@ export type Item = {
   published: string;
   category: string;
   sponsored: boolean;
+  // תרגום AI לעברית (רק לכתבות שאינן בעברית)
+  title_he?: string;
+  summary_he?: string;
+  opinion?: boolean; // טור דעה
+  hedged?: boolean; // נשען על דיווח לא מאושר
 };
+
+// ציטוט מתוך כותרת: "דובר: ציטוט" (ai = מכותרת שתורגמה)
+export type Quote = { speaker: string; text: string; item: string; ai?: boolean };
 
 export type Story = {
   id: string;
-  lang: string;
+  lang: string; // שפת הכותרת המוצגת
+  title_ai?: boolean; // הכותרת והתקציר תורגמו ע"י AI
   category: string;
   title: string;
   summary: string;
   updated: string;
   independent_sources: number;
   regions: Region[];
+  quotes: Quote[];
   items: Item[];
 };
 

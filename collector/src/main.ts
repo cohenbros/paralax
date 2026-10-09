@@ -4,16 +4,19 @@
 //   OUT_DIR                – תיקיית הפלט (ברירת מחדל: <repo>/site)
 //   PREVIOUS_LATEST_URL    – כתובת latest.json שפורסם בריצה הקודמת (כדי לשמור 48 שעות גם כשהפיד קצר)
 //   COLLECTOR_CONTACT_URL  – קישור למאגר, נכנס ל-User-Agent
+//   GEMINI_API_KEY         – לתרגום כותרות לעברית (אופציונלי; בלעדיו מדלגים על התרגום)
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { cluster } from "./cluster.ts";
 import { describeError, fetchFeed } from "./fetch-feed.ts";
 import { cleanText, detectCategory, fixLink, itemId, parseDate, resolvePublished, truncate } from "./normalize.ts";
 import { parseFeed } from "./parse.ts";
+import { isHedged, isOpinion } from "./signals.ts";
 import { isSponsored } from "./sponsored.ts";
-import type { Item, Latest, Source, Story } from "./types.ts";
+import { buildStories } from "./stories.ts";
+import { translateToHebrew } from "./translate.ts";
+import type { Item, Latest, Source } from "./types.ts";
 
 const REPO = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
 const OUT_DIR = process.env.OUT_DIR ?? join(REPO, "site");
@@ -57,6 +60,9 @@ async function collectSource(src: Source, now: Date, prevById: Map<string, Item>
     if (summary === title || title.startsWith(summary.replace(/…$/, ""))) summary = "";
     const id = itemId(url);
     const prev = prevById.get(id);
+    const categories = raw.categories.map(cleanText);
+    // תרגום קודם נשמר כל עוד הכותרת לא השתנתה
+    const keepTranslation = prev?.title === title && prev.title_he;
     items.push({
       id,
       source: src.id,
@@ -65,36 +71,13 @@ async function collectSource(src: Source, now: Date, prevById: Map<string, Item>
       url,
       published: resolvePublished(parseDate(raw.date), now, prev?.published),
       category: detectCategory(raw, url, src),
-      sponsored: isSponsored({ title, summary, categories: raw.categories.map(cleanText), author: cleanText(raw.author), url }),
+      sponsored: isSponsored({ title, summary, categories, author: cleanText(raw.author), url }),
+      ...(isOpinion(url, categories) ? { opinion: true as const } : {}),
+      ...(isHedged(title, summary) ? { hedged: true as const } : {}),
+      ...(keepTranslation ? { title_he: prev.title_he, summary_he: prev.summary_he ?? "" } : {}),
     });
   }
   return items;
-}
-
-export function buildStories(items: Item[], sources: Map<string, Source>): Story[] {
-  const groups = cluster(items.map((it) => ({ ...it, lang: sources.get(it.source)!.language, time: Date.parse(it.published) })));
-  return groups
-    .map((g): Story => {
-      const members = g.sort((a, b) => a.time - b.time);
-      const lead = members.find((m) => !m.sponsored) ?? members[0];
-      const votes = new Map<string, number>();
-      for (const m of members) votes.set(m.category, (votes.get(m.category) ?? 0) + 1);
-      const category = [...votes].sort((a, b) => b[1] - a[1])[0][0];
-      const owners = new Set(members.map((m) => sources.get(m.source)!.owner_group));
-      const regions = [...new Set(members.map((m) => sources.get(m.source)!.region))];
-      return {
-        id: lead.id,
-        lang: lead.lang,
-        category,
-        title: lead.title,
-        summary: lead.summary,
-        updated: members[members.length - 1].published,
-        independent_sources: owners.size,
-        regions,
-        items: members.map(({ lang: _l, time: _t, ...it }) => it).reverse(),
-      };
-    })
-    .sort((a, b) => Date.parse(b.updated) - Date.parse(a.updated));
 }
 
 // פרופילים לתצוגה: בלי שדות פנימיים, וערך שמסומן "לאמת" לא מתפרסם
@@ -146,6 +129,19 @@ async function main() {
   for (const it of previous) if (!fresh.has(it.id)) fresh.set(it.id, it);
   const cutoff = now.getTime() - WINDOW_HOURS * 3600_000;
   const items = [...fresh.values()].filter((it) => Date.parse(it.published) >= cutoff);
+
+  // תרגום לעברית רק לידיעות חדשות (או שהכותרת שלהן השתנתה), החדשות ביותר קודם
+  const untranslated = items
+    .filter((it) => byId.get(it.source)!.language !== "he" && !it.title_he)
+    .sort((a, b) => Date.parse(b.published) - Date.parse(a.published));
+  const translations = await translateToHebrew(
+    untranslated.map((it) => ({ id: it.id, title: it.title, summary: it.summary, lang: byId.get(it.source)!.language })),
+  );
+  for (const it of items) {
+    const t = translations.get(it.id);
+    if (t) Object.assign(it, { title_he: t.title, summary_he: t.summary });
+  }
+  if (untranslated.length) console.log(`תורגמו ${translations.size}/${untranslated.length} ידיעות`);
 
   const stories = buildStories(items, byId);
   const latest: Latest = {

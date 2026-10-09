@@ -2,7 +2,7 @@
 // רשומה פגומה נזרקת; קובץ בגרסה לא מוכרת נדחה כולו.
 
 import { isSafeHttpUrl } from "./links";
-import { DATA_VERSION, type Item, type Latest, type Region, type SourceProfile, type Story } from "./types";
+import { DATA_VERSION, type Item, type Latest, type Quote, type Region, type SourceProfile, type Story } from "./types";
 
 type Obj = Record<string, unknown>;
 const isObj = (v: unknown): v is Obj => typeof v === "object" && v !== null && !Array.isArray(v);
@@ -16,7 +16,7 @@ export class DataFormatError extends Error {}
 
 function parseItem(v: unknown): Item | null {
   if (!isObj(v)) return null;
-  const { id, source, title, summary, url, published, category, sponsored } = v;
+  const { id, source, title, summary, url, published, category, sponsored, title_he, summary_he } = v;
   if (!str(id) || !str(source) || !str(title) || !title || !isSafeHttpUrl(url) || !isDate(published)) return null;
   return {
     id,
@@ -27,7 +27,15 @@ function parseItem(v: unknown): Item | null {
     published,
     category: str(category) ? category : "",
     sponsored: sponsored === true,
+    ...(str(title_he) && title_he ? { title_he, summary_he: str(summary_he) ? summary_he : "" } : {}),
+    opinion: v.opinion === true,
+    hedged: v.hedged === true,
   };
+}
+
+function parseQuote(v: unknown, itemIds: Set<string>): Quote | null {
+  if (!isObj(v) || !str(v.speaker) || !str(v.text) || !str(v.item) || !itemIds.has(v.item)) return null;
+  return { speaker: v.speaker, text: v.text, item: v.item, ai: v.ai === true };
 }
 
 function parseStory(v: unknown): Story | null {
@@ -35,15 +43,18 @@ function parseStory(v: unknown): Story | null {
   const items = v.items.map(parseItem).filter((i): i is Item => i !== null);
   const { id, lang, category, title, summary, updated, independent_sources } = v;
   if (!items.length || !str(id) || !str(title) || !isDate(updated)) return null;
+  const itemIds = new Set(items.map((i) => i.id));
   return {
     id,
     lang: str(lang) ? lang : "he",
+    title_ai: v.title_ai === true,
     category: str(category) ? category : "",
     title,
     summary: str(summary) ? summary : "",
     updated,
     independent_sources: typeof independent_sources === "number" && independent_sources >= 1 ? independent_sources : 1,
     regions: Array.isArray(v.regions) ? v.regions.filter(isRegion) : [],
+    quotes: Array.isArray(v.quotes) ? v.quotes.map((q) => parseQuote(q, itemIds)).filter((q): q is Quote => q !== null) : [],
     items,
   };
 }
