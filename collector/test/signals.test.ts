@@ -3,7 +3,7 @@ import { test } from "node:test";
 import { collectQuotes, extractQuote, isOffensive } from "../src/quotes.ts";
 import { isHedged, isOpinion } from "../src/signals.ts";
 import { buildStories } from "../src/stories.ts";
-import { extractText } from "../src/translate.ts";
+import { extractText, isCleanHebrew } from "../src/translate.ts";
 import type { Item, Source } from "../src/types.ts";
 
 test("isOpinion: נתיב או תגית של דעות", () => {
@@ -83,4 +83,12 @@ test("buildStories: כתבה מחו\"ל מצטרפת לאירוע ישראלי �
   assert.equal(renoir.title, "ציורי רנואר שנגנבו נמצאו");
   assert.equal(renoir.title_ai, true);
   assert.equal(renoir.lang, "he");
+});
+
+test("isCleanHebrew: דוחה תרגום עם אותיות מכתב אחר", () => {
+  assert.equal(isCleanHebrew("רעידת אדמה בעוצמה 7.7 פוגעת בפנמה"), true);
+  assert.equal(isCleanHebrew("טראמפ בוחר בפרשנית קייטי זכריה (CNN) לדוברת"), true);
+  assert.equal(isCleanHebrew("רช่วยון אוקראיניים"), false);
+  assert.equal(isCleanHebrew("סואيلا ברוורמן"), false);
+  assert.equal(isCleanHebrew("Panama earthquake"), false);
 });

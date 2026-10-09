@@ -33,6 +33,13 @@ const SCHEMA = {
   required: ["items"],
 };
 
+// תרגום תקין: עברית, ואולי שמות באותיות לטיניות. המודל לפעמים "מחליק" לאותיות של כתב אחר
+// (למשל תאית או ערבית בתוך מילה עברית) – תרגום כזה נדחה ומנוסה שוב בריצה הבאה.
+const FOREIGN_LETTER = /[^\p{Script=Hebrew}\p{Script=Latin}\p{N}\p{P}\p{S}\p{Z}\p{M}]/u;
+export function isCleanHebrew(text: string): boolean {
+  return /\p{Script=Hebrew}/u.test(text) && !FOREIGN_LETTER.test(text);
+}
+
 type Step = { type?: string; content?: { type?: string; text?: string }[] };
 
 // הטקסט נמצא ב-steps[].content[].text של שלב model_output (Interactions API)
@@ -66,8 +73,9 @@ async function translateBatch(batch: ToTranslate[], apiKey: string): Promise<Map
   const known = new Set(batch.map((b) => b.id));
   const out = new Map<string, Translation>();
   for (const t of parsed.items ?? []) {
-    if (known.has(t.id) && typeof t.title === "string" && t.title.trim()) {
-      out.set(t.id, { title: t.title.trim(), summary: typeof t.summary === "string" ? t.summary.trim() : "" });
+    const summary = typeof t.summary === "string" ? t.summary.trim() : "";
+    if (known.has(t.id) && typeof t.title === "string" && isCleanHebrew(t.title) && (!summary || isCleanHebrew(summary))) {
+      out.set(t.id, { title: t.title.trim(), summary });
     }
   }
   return out;

@@ -15,7 +15,7 @@ import { parseFeed } from "./parse.ts";
 import { isHedged, isOpinion } from "./signals.ts";
 import { isSponsored } from "./sponsored.ts";
 import { buildStories } from "./stories.ts";
-import { translateToHebrew } from "./translate.ts";
+import { isCleanHebrew, translateToHebrew } from "./translate.ts";
 import type { Item, Latest, Source } from "./types.ts";
 
 const REPO = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
@@ -130,6 +130,14 @@ async function main() {
   for (const it of previous) if (!fresh.has(it.id)) fresh.set(it.id, it);
   const cutoff = now.getTime() - WINDOW_HOURS * 3600_000;
   const items = [...fresh.values()].filter((it) => Date.parse(it.published) >= cutoff);
+
+  // תרגום פגום מריצה קודמת (נשמר לפני שהייתה בדיקה) נמחק ומתורגם מחדש
+  for (const it of items) {
+    if (it.title_he && !(isCleanHebrew(it.title_he) && (!it.summary_he || isCleanHebrew(it.summary_he)))) {
+      delete it.title_he;
+      delete it.summary_he;
+    }
+  }
 
   // תרגום לעברית רק לידיעות חדשות (או שהכותרת שלהן השתנתה), החדשות ביותר קודם
   const untranslated = items
