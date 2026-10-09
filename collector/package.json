@@ -1,0 +1,21 @@
+{
+  "name": "paralax-collector",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "collect": "node src/main.ts",
+    "check-feeds": "node src/check-feeds.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "node --test \"test/**/*.test.ts\""
+  },
+  "dependencies": {
+    "fast-xml-parser": "^5.11.2"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.4",
+    "typescript": "^7.0.2"
+  }
+}

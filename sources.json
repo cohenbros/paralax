@@ -1,0 +1,637 @@
+{
+  "version": 1,
+  "as_of": "2026-10-09",
+  "note": "טיוטה. שדות עם 'לאמת' או null צריכים בדיקה וקישור לראיה לפני פרסום. feed_checked = תאריך שבו הפיד נבדק ועבד.",
+  "sources": [
+    {
+      "id": "ynet",
+      "name": "ynet",
+      "site": "https://www.ynet.co.il",
+      "feed": "https://www.ynet.co.il/Integration/StoryRss2.xml",
+      "feed_checked": "2026-10-09",
+      "feed_terms_ok": null,
+      "language": "he",
+      "region": "il",
+      "categories": [
+        "אקטואליה"
+      ],
+      "owner_group": "yedioth",
+      "owner": "קבוצת ידיעות אחרונות",
+      "funding": "פרטי, פרסום",
+      "press_council_member": null,
+      "corrections_policy_url": null,
+      "ifcn_signatory": null,
+      "audience_lean": {
+        "range": null,
+        "evidence_url": null
+      },
+      "evidence_urls": []
+    },
+    {
+      "id": "calcalist",
+      "name": "כלכליסט",
+      "site": "https://www.calcalist.co.il",
+      "feed": "https://www.calcalist.co.il/GeneralRSS/0,16335,L-8,00.xml",
+      "feed_checked": null,
+      "feed_terms_ok": null,
+      "language": "he",
+      "region": "il",
+      "categories": [
+        "כלכלה",
+        "צרכנות"
+      ],
+      "owner_group": "yedioth",
+      "owner": "קבוצת ידיעות אחרונות",
+      "funding": "פרטי, פרסום",
+      "press_council_member": null,
+      "corrections_policy_url": null,
+      "ifcn_signatory": null,
+      "audience_lean": {
+        "range": null,
+        "evidence_url": null
+      },
+      "evidence_urls": []
+    },
+    {
+      "id": "maariv",
+      "name": "מעריב",
+      "site": "https://www.maariv.co.il",
+      "feed": "https://www.maariv.co.il/rss/rsschadashot",
+      "feed_checked": "2026-10-09",
+      "feed_terms_ok": null,
+      "language": "he",
+      "region": "il",
+      "categories": [
+        "אקטואליה"
+      ],
+      "owner_group": "azur",
+      "owner": "קבוצת אלי עזור (ג'רוזלם פוסט)",
+      "funding": "פרטי, פרסום",
+      "press_council_member": null,
+      "corrections_policy_url": null,
+      "ifcn_signatory": null,
+      "audience_lean": {
+        "range": null,
+        "evidence_url": null
+      },
+      "evidence_urls": []
+    },
+    {
+      "id": "jpost",
+      "name": "The Jerusalem Post",
+      "site": "https://www.jpost.com",
+      "feed": "https://www.jpost.com/rss/rssfeedsfrontpage.aspx",
+      "feed_checked": "2026-10-09",
+      "feed_terms_ok": null,
+      "language": "en",
+      "region": "il",
+      "categories": [
+        "אקטואליה"
+      ],
+      "owner_group": "azur",
+      "owner": "קבוצת אלי עזור (ג'רוזלם פוסט)",
+      "funding": "פרטי, פרסום",
+      "press_council_member": null,
+      "corrections_policy_url": null,
+      "ifcn_signatory": null,
+      "audience_lean": {
+        "range": null,
+        "evidence_url": null
+      },
+      "evidence_urls": []
+    },
+    {
+      "id": "walla",
+      "name": "וואלה",
+      "site": "https://news.walla.co.il",
+      "feed": "https://rss.walla.co.il/feed/1",
+      "feed_checked": null,
+      "feed_terms_ok": null,
+      "language": "he",
+      "region": "il",
+      "categories": [
+        "אקטואליה"
+      ],
+      "owner_group": "walla",
+      "owner": "לאמת: בעלות נוכחית",
+      "funding": "פרטי, פרסום",
+      "press_council_member": null,
+      "corrections_policy_url": null,
+      "ifcn_signatory": null,
+      "audience_lean": {
+        "range": null,
+        "evidence_url": null
+      },
+      "evidence_urls": []
+    },
+    {
+      "id": "israelhayom",
+      "name": "ישראל היום",
+      "site": "https://www.israelhayom.co.il",
+      "feed": "https://www.israelhayom.co.il/rss.xml",
+      "feed_checked": "2026-10-09",
+      "feed_terms_ok": null,
+      "language": "he",
+      "region": "il",
+      "categories": [
+        "אקטואליה"
+      ],
+      "owner_group": "adelson",
+      "owner": "משפחת אדלסון",
+      "funding": "פרטי, עיתון חינמי",
+      "press_council_member": null,
+      "corrections_policy_url": null,
+      "ifcn_signatory": null,
+      "audience_lean": {
+        "range": null,
+        "evidence_url": null
+      },
+      "evidence_urls": []
+    },
+    {
+      "id": "makorrishon",
+      "name": "מקור ראשון",
+      "site": "https://www.makorrishon.co.il",
+      "feed": "https://www.makorrishon.co.il/feed/",
+      "feed_checked": null,
+      "feed_terms_ok": null,
+      "language": "he",
+      "region": "il",
+      "categories": [
+        "אקטואליה",
+        "פוליטיקה"
+      ],
+      "owner_group": "adelson",
+      "owner": "משפחת אדלסון (לאמת)",
+      "funding": "פרטי",
+      "press_council_member": null,
+      "corrections_policy_url": null,
+      "ifcn_signatory": null,
+      "audience_lean": {
+        "range": null,
+        "evidence_url": null
+      },
+      "evidence_urls": []
+    },
+    {
+      "id": "haaretz",
+      "name": "הארץ",
+      "site": "https://www.haaretz.co.il",
+      "feed": "https://www.haaretz.co.il/srv/htz---all-articles",
+      "feed_checked": "2026-10-09",
+      "feed_terms_ok": null,
+      "language": "he",
+      "region": "il",
+      "categories": [
+        "אקטואליה",
+        "פוליטיקה"
+      ],
+      "owner_group": "haaretz",
+      "owner": "קבוצת הארץ (משפחת שוקן ושותפים)",
+      "funding": "פרטי, מינויים",
+      "press_council_member": null,
+      "corrections_policy_url": null,
+      "ifcn_signatory": null,
+      "audience_lean": {
+        "range": null,
+        "evidence_url": null
+      },
+      "evidence_urls": []
+    },
+    {
+      "id": "themarker",
+      "name": "TheMarker",
+      "site": "https://www.themarker.com",
+      "feed": "https://www.themarker.com/srv/tm-all-articles",
+      "feed_checked": "2026-10-09",
+      "feed_terms_ok": null,
+      "language": "he",
+      "region": "il",
+      "categories": [
+        "כלכלה",
+        "צרכנות"
+      ],
+      "owner_group": "haaretz",
+      "owner": "קבוצת הארץ (משפחת שוקן ושותפים)",
+      "funding": "פרטי, מינויים",
+      "press_council_member": null,
+      "corrections_policy_url": null,
+      "ifcn_signatory": null,
+      "audience_lean": {
+        "range": null,
+        "evidence_url": null
+      },
+      "evidence_urls": []
+    },
+    {
+      "id": "globes",
+      "name": "גלובס",
+      "site": "https://www.globes.co.il",
+      "feed": "https://www.globes.co.il/webservice/rss/rssfeeder.asmx/FeederNode?iID=2",
+      "feed_checked": "2026-10-09",
+      "feed_terms_ok": null,
+      "language": "he",
+      "region": "il",
+      "categories": [
+        "כלכלה"
+      ],
+      "owner_group": "globes",
+      "owner": "גלובס (לאמת: משפחת פישמן)",
+      "funding": "פרטי",
+      "press_council_member": null,
+      "corrections_policy_url": null,
+      "ifcn_signatory": null,
+      "audience_lean": {
+        "range": null,
+        "evidence_url": null
+      },
+      "evidence_urls": []
+    },
+    {
+      "id": "n12",
+      "name": "N12 חדשות",
+      "site": "https://www.mako.co.il/news",
+      "feed": "https://rcs.mako.co.il/rss/news-israel.xml",
+      "feed_checked": "2026-10-09",
+      "feed_terms_ok": null,
+      "language": "he",
+      "region": "il",
+      "categories": [
+        "אקטואליה"
+      ],
+      "owner_group": "keshet",
+      "owner": "קשת מדיה",
+      "funding": "פרטי, פרסום",
+      "press_council_member": null,
+      "corrections_policy_url": null,
+      "ifcn_signatory": null,
+      "audience_lean": {
+        "range": null,
+        "evidence_url": null
+      },
+      "evidence_urls": []
+    },
+    {
+      "id": "kan",
+      "name": "כאן חדשות",
+      "site": "https://www.kan.org.il",
+      "feed": "לאמת: כתובת פיד",
+      "feed_checked": null,
+      "feed_terms_ok": null,
+      "language": "he",
+      "region": "il",
+      "categories": [
+        "אקטואליה"
+      ],
+      "owner_group": "kan",
+      "owner": "תאגיד השידור הישראלי",
+      "funding": "ציבורי",
+      "press_council_member": null,
+      "corrections_policy_url": null,
+      "ifcn_signatory": null,
+      "audience_lean": {
+        "range": null,
+        "evidence_url": null
+      },
+      "evidence_urls": []
+    },
+    {
+      "id": "davar",
+      "name": "דבר",
+      "site": "https://www.davar1.co.il",
+      "feed": "https://www.davar1.co.il/feed/",
+      "feed_checked": "2026-10-09",
+      "feed_terms_ok": null,
+      "language": "he",
+      "region": "il",
+      "categories": [
+        "אקטואליה",
+        "כלכלה"
+      ],
+      "owner_group": "histadrut",
+      "owner": "ההסתדרות (לאמת)",
+      "funding": "ארגון עובדים",
+      "press_council_member": null,
+      "corrections_policy_url": null,
+      "ifcn_signatory": null,
+      "audience_lean": {
+        "range": null,
+        "evidence_url": null
+      },
+      "evidence_urls": []
+    },
+    {
+      "id": "inn",
+      "name": "ערוץ 7",
+      "site": "https://www.inn.co.il",
+      "feed": "https://www.inn.co.il/Rss.aspx",
+      "feed_checked": "2026-10-09",
+      "feed_terms_ok": null,
+      "language": "he",
+      "region": "il",
+      "categories": [
+        "אקטואליה",
+        "פוליטיקה"
+      ],
+      "owner_group": "inn",
+      "owner": "לאמת: בעלות נוכחית",
+      "funding": "לאמת",
+      "press_council_member": null,
+      "corrections_policy_url": null,
+      "ifcn_signatory": null,
+      "audience_lean": {
+        "range": null,
+        "evidence_url": null
+      },
+      "evidence_urls": []
+    },
+    {
+      "id": "zman",
+      "name": "זמן ישראל",
+      "site": "https://www.zman.co.il",
+      "feed": "https://www.zman.co.il/feed/",
+      "feed_checked": "2026-10-09",
+      "feed_terms_ok": null,
+      "language": "he",
+      "region": "il",
+      "categories": [
+        "אקטואליה"
+      ],
+      "owner_group": "toi",
+      "owner": "קבוצת טיימס אוף ישראל",
+      "funding": "פרטי",
+      "press_council_member": null,
+      "corrections_policy_url": null,
+      "ifcn_signatory": null,
+      "audience_lean": {
+        "range": null,
+        "evidence_url": null
+      },
+      "evidence_urls": []
+    },
+    {
+      "id": "toi",
+      "name": "The Times of Israel",
+      "site": "https://www.timesofisrael.com",
+      "feed": "https://www.timesofisrael.com/feed/",
+      "feed_checked": null,
+      "feed_terms_ok": null,
+      "language": "en",
+      "region": "il",
+      "categories": [
+        "אקטואליה"
+      ],
+      "owner_group": "toi",
+      "owner": "קבוצת טיימס אוף ישראל",
+      "funding": "פרטי",
+      "press_council_member": null,
+      "corrections_policy_url": null,
+      "ifcn_signatory": null,
+      "audience_lean": {
+        "range": null,
+        "evidence_url": null
+      },
+      "evidence_urls": []
+    },
+    {
+      "id": "arab48",
+      "name": "عرب 48",
+      "site": "https://www.arab48.com",
+      "feed": "https://www.arab48.com/rss",
+      "feed_checked": "2026-10-09",
+      "feed_terms_ok": null,
+      "language": "ar",
+      "region": "il",
+      "categories": [
+        "אקטואליה"
+      ],
+      "owner_group": "arab48",
+      "owner": "לאמת: בעלות",
+      "funding": "לאמת",
+      "press_council_member": null,
+      "corrections_policy_url": null,
+      "ifcn_signatory": null,
+      "audience_lean": {
+        "range": null,
+        "evidence_url": null
+      },
+      "evidence_urls": []
+    },
+    {
+      "id": "bbc",
+      "name": "BBC News",
+      "site": "https://www.bbc.com/news",
+      "feed": "https://feeds.bbci.co.uk/news/world/rss.xml",
+      "feed_checked": "2026-10-09",
+      "feed_terms_ok": null,
+      "language": "en",
+      "region": "world",
+      "categories": [
+        "עולם"
+      ],
+      "owner_group": "bbc",
+      "owner": "BBC",
+      "funding": "ציבורי (בריטניה)",
+      "press_council_member": null,
+      "corrections_policy_url": null,
+      "ifcn_signatory": null,
+      "audience_lean": {
+        "range": null,
+        "evidence_url": null
+      },
+      "evidence_urls": []
+    },
+    {
+      "id": "bbcarabic",
+      "name": "BBC عربي",
+      "site": "https://www.bbc.com/arabic",
+      "feed": "https://feeds.bbci.co.uk/arabic/rss.xml",
+      "feed_checked": "2026-10-09",
+      "feed_terms_ok": null,
+      "language": "ar",
+      "region": "world",
+      "categories": [
+        "עולם"
+      ],
+      "owner_group": "bbc",
+      "owner": "BBC",
+      "funding": "ציבורי (בריטניה)",
+      "press_council_member": null,
+      "corrections_policy_url": null,
+      "ifcn_signatory": null,
+      "audience_lean": {
+        "range": null,
+        "evidence_url": null
+      },
+      "evidence_urls": []
+    },
+    {
+      "id": "guardian",
+      "name": "The Guardian",
+      "site": "https://www.theguardian.com",
+      "feed": "https://www.theguardian.com/world/rss",
+      "feed_checked": "2026-10-09",
+      "feed_terms_ok": null,
+      "language": "en",
+      "region": "world",
+      "categories": [
+        "עולם"
+      ],
+      "owner_group": "guardian",
+      "owner": "Scott Trust",
+      "funding": "קרן ללא בעלי מניות, תרומות קוראים",
+      "press_council_member": null,
+      "corrections_policy_url": null,
+      "ifcn_signatory": null,
+      "audience_lean": {
+        "range": null,
+        "evidence_url": null
+      },
+      "evidence_urls": []
+    },
+    {
+      "id": "nyt",
+      "name": "The New York Times",
+      "site": "https://www.nytimes.com",
+      "feed": "https://rss.nytimes.com/services/xml/rss/nyt/World.xml",
+      "feed_checked": "2026-10-09",
+      "feed_terms_ok": null,
+      "language": "en",
+      "region": "world",
+      "categories": [
+        "עולם"
+      ],
+      "owner_group": "nyt",
+      "owner": "The New York Times Company",
+      "funding": "פרטי, מינויים",
+      "press_council_member": null,
+      "corrections_policy_url": null,
+      "ifcn_signatory": null,
+      "audience_lean": {
+        "range": null,
+        "evidence_url": null
+      },
+      "evidence_urls": []
+    },
+    {
+      "id": "fox",
+      "name": "Fox News",
+      "site": "https://www.foxnews.com",
+      "feed": "https://moxie.foxnews.com/google-publisher/world.xml",
+      "feed_checked": "2026-10-09",
+      "feed_terms_ok": null,
+      "language": "en",
+      "region": "world",
+      "categories": [
+        "עולם"
+      ],
+      "owner_group": "fox",
+      "owner": "Fox Corporation",
+      "funding": "פרטי, פרסום",
+      "press_council_member": null,
+      "corrections_policy_url": null,
+      "ifcn_signatory": null,
+      "audience_lean": {
+        "range": null,
+        "evidence_url": null
+      },
+      "evidence_urls": []
+    },
+    {
+      "id": "npr",
+      "name": "NPR",
+      "site": "https://www.npr.org",
+      "feed": "https://feeds.npr.org/1001/rss.xml",
+      "feed_checked": "2026-10-09",
+      "feed_terms_ok": null,
+      "language": "en",
+      "region": "world",
+      "categories": [
+        "עולם"
+      ],
+      "owner_group": "npr",
+      "owner": "NPR",
+      "funding": "ציבורי ללא כוונת רווח (ארה\"ב)",
+      "press_council_member": null,
+      "corrections_policy_url": null,
+      "ifcn_signatory": null,
+      "audience_lean": {
+        "range": null,
+        "evidence_url": null
+      },
+      "evidence_urls": []
+    },
+    {
+      "id": "aljazeera",
+      "name": "Al Jazeera English",
+      "site": "https://www.aljazeera.com",
+      "feed": "https://www.aljazeera.com/xml/rss/all.xml",
+      "feed_checked": "2026-10-09",
+      "feed_terms_ok": null,
+      "language": "en",
+      "region": "world",
+      "categories": [
+        "עולם"
+      ],
+      "owner_group": "aljazeera",
+      "owner": "רשת אל ג'זירה",
+      "funding": "מימון ממשלת קטאר",
+      "press_council_member": null,
+      "corrections_policy_url": null,
+      "ifcn_signatory": null,
+      "audience_lean": {
+        "range": null,
+        "evidence_url": null
+      },
+      "evidence_urls": []
+    },
+    {
+      "id": "dw",
+      "name": "DW",
+      "site": "https://www.dw.com",
+      "feed": "https://rss.dw.com/rdf/rss-en-all",
+      "feed_checked": "2026-10-09",
+      "feed_terms_ok": null,
+      "language": "en",
+      "region": "world",
+      "categories": [
+        "עולם"
+      ],
+      "owner_group": "dw",
+      "owner": "Deutsche Welle",
+      "funding": "מימון ממשלתי (גרמניה)",
+      "press_council_member": null,
+      "corrections_policy_url": null,
+      "ifcn_signatory": null,
+      "audience_lean": {
+        "range": null,
+        "evidence_url": null
+      },
+      "evidence_urls": []
+    },
+    {
+      "id": "france24",
+      "name": "France 24",
+      "site": "https://www.france24.com",
+      "feed": "https://www.france24.com/en/rss",
+      "feed_checked": "2026-10-09",
+      "feed_terms_ok": null,
+      "language": "en",
+      "region": "world",
+      "categories": [
+        "עולם"
+      ],
+      "owner_group": "fmm",
+      "owner": "France Médias Monde",
+      "funding": "בבעלות ממשלתית (צרפת)",
+      "press_council_member": null,
+      "corrections_policy_url": null,
+      "ifcn_signatory": null,
+      "audience_lean": {
+        "range": null,
+        "evidence_url": null
+      },
+      "evidence_urls": []
+    }
+  ]
+}
