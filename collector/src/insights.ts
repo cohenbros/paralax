@@ -26,6 +26,7 @@ Write all text in natural Hebrew.
    "not_news": advertising or sponsored promotion, shopping deals, horoscopes, quizzes, recipes, lifestyle tips,
      or celebrity gossip without public significance.
    "news": everything else, i.e. a report about something that happened or was said, that matters to the public.
+     Weather forecasts and warnings, traffic, and public-service updates are "news".
    If kind is not "news", return empty questions and viewpoints.
 
 1. "questions": exactly 3 short questions (up to 12 words each) about the BACKGROUND and CONCEPTS behind the story,
