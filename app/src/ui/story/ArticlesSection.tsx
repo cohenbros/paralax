@@ -1,5 +1,6 @@
 import { useRouter } from "expo-router";
 import { Pressable, StyleSheet, View } from "react-native";
+import { FEATURES } from "@/config";
 import { itemText } from "@/domain/display";
 import { leanBucket, sortByLean } from "@/domain/lean";
 import { relativeTime } from "@/domain/time";
@@ -10,6 +11,7 @@ import { Icon } from "../components/Icon";
 import { Section } from "../components/Section";
 import { SignalTag } from "../components/SignalTag";
 import { openLink } from "../openLink";
+import { flagView } from "../signalText";
 import { strings } from "../strings";
 import { LEAN_COLORS, spacing, useColors } from "../theme";
 
@@ -20,7 +22,7 @@ function ArticleRow({ item, source }: { item: Item; source: SourceProfile | unde
   return (
     <View style={[styles.article, { borderTopColor: colors.border }]}>
       <View style={styles.row}>
-        <View style={[styles.dot, { backgroundColor: LEAN_COLORS[leanBucket(source)] }]} />
+        {FEATURES.politicalLean ? <View style={[styles.dot, { backgroundColor: LEAN_COLORS[leanBucket(source)] }]} /> : null}
         <Pressable
           onPress={() => source && router.push({ pathname: "/source/[id]", params: { id: source.id } })}
           accessibilityRole="link"
@@ -46,9 +48,10 @@ function ArticleRow({ item, source }: { item: Item; source: SourceProfile | unde
 
       <View style={styles.tags}>
         {text.ai ? <AiMark /> : null}
-        {item.opinion ? <SignalTag view={{ icon: "chatbubble-ellipses-outline", short: "דעה", label: "טור דעה", explanation: "", tone: "neutral" }} /> : null}
-        {item.hedged ? <SignalTag view={{ icon: "help-circle-outline", short: "לא מאושר", label: "לפי דיווח", explanation: "", tone: "notice" }} /> : null}
         {item.sponsored ? <SignalTag view={{ icon: "pricetag-outline", short: "ממומן", label: "תוכן ממומן", explanation: "", tone: "notice" }} /> : null}
+        {item.flags.map((f) => (
+          <SignalTag key={f} view={flagView(f)} />
+        ))}
       </View>
 
       <Pressable onPress={() => openLink(item.url)} accessibilityRole="link" style={styles.row} hitSlop={6}>
@@ -61,13 +64,13 @@ function ArticleRow({ item, source }: { item: Item; source: SourceProfile | unde
   );
 }
 
-// "איך כתבו על זה": כל הכתבות, ממוינות לפי נטיית הקהל של המקור (כמו פס הקשת)
+// "איך כתבו על זה": כל הכתבות על האירוע, העדכנית ראשונה (או לפי נטיית הקהל, כשהתכונה פעילה)
 export function ArticlesSection({ items, sources }: { items: Item[]; sources: Record<string, SourceProfile> }) {
-  const sorted = sortByLean(items, (i) => sources[i.source]);
+  const sorted = FEATURES.politicalLean ? sortByLean(items, (i) => sources[i.source]) : items;
   return (
     <Section title={strings.story.howTheyWrote}>
       <AppText variant="caption" tone="muted">
-        {strings.story.howTheyWroteHint}
+        {FEATURES.politicalLean ? strings.story.howTheyWroteLeanHint : strings.story.howTheyWroteHint}
       </AppText>
       {sorted.map((item) => (
         <ArticleRow key={item.id} item={item} source={sources[item.source]} />

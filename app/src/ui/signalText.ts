@@ -3,6 +3,7 @@ import type { Ionicons } from "@expo/vector-icons";
 import type { ComponentProps } from "react";
 import type { LeanBucket } from "@/domain/lean";
 import type { Signal } from "@/domain/signals";
+import type { ItemFlag } from "@/domain/types";
 
 export type IconName = ComponentProps<typeof Ionicons>["name"];
 export type SignalTone = "info" | "notice" | "neutral";
@@ -18,6 +19,42 @@ function onlySide(s: Extract<Signal, { kind: "spectrum" }>): string {
 
 export function signalView(s: Signal): SignalView {
   switch (s.kind) {
+    case "anonymous":
+      return {
+        icon: "eye-off-outline",
+        short: "מקורות אנונימיים",
+        label: "נשען על מקורות אנונימיים",
+        explanation:
+          'רוב הכתבות מצטטות "גורם בכיר" או "מקורות" בלי שם. לפעמים זה הכרחי, אבל אי אפשר לבדוק מי אמר ומה האינטרס שלו. האם מישהו אישר את זה בשמו?',
+        tone: "notice",
+      };
+    case "sensational":
+      return {
+        icon: "flame-outline",
+        short: "כותרת מתלהמת",
+        label: "כותרת בניסוח מתלהם",
+        explanation:
+          'מילים כמו "דרמה", "סערה" או "לא תאמינו" נועדו למשוך קליקים. כדאי לקרוא את הכתבה עצמה: האם התוכן תואם את הכותרת?',
+        tone: "notice",
+      };
+    case "social":
+      return {
+        icon: "videocam-outline",
+        short: "תיעוד מהרשת",
+        label: "מבוסס על תיעוד או סרטון",
+        explanation:
+          "סרטונים ותמונות יכולים להיות ישנים, ערוכים או מהקשר אחר. האם מצוין מי צילם, מתי ואיפה, והאם התיעוד אומת?",
+        tone: "neutral",
+      };
+    case "study":
+      return {
+        icon: "flask-outline",
+        short: "מחקר או סקר",
+        label: "מבוסס על מחקר או סקר",
+        explanation:
+          "שווה לבדוק: מי ערך ומי מימן? כמה אנשים השתתפו? האם המחקר פורסם בכתב עת? האם הכותרת אומרת יותר ממה שהמחקר מצא?",
+        tone: "neutral",
+      };
     case "sources":
       return {
         icon: "newspaper-outline",
@@ -95,4 +132,19 @@ export function leanLabel(range: string): string {
     .split("..")
     .map((p) => LEAN_LABELS[p.trim()] ?? p)
     .join(" עד ");
+}
+
+// תגית קטנה לכתבה בודדת ב"איך כתבו על זה"
+const FLAG_VIEWS: Record<ItemFlag, Pick<SignalView, "icon" | "short" | "tone">> = {
+  opinion: { icon: "chatbubble-ellipses-outline", short: "דעה", tone: "neutral" },
+  hedged: { icon: "help-circle-outline", short: "לא מאושר", tone: "notice" },
+  anonymous: { icon: "eye-off-outline", short: "מקור אנונימי", tone: "notice" },
+  sensational: { icon: "flame-outline", short: "כותרת מתלהמת", tone: "notice" },
+  social: { icon: "videocam-outline", short: "תיעוד מהרשת", tone: "neutral" },
+  study: { icon: "flask-outline", short: "מחקר/סקר", tone: "neutral" },
+};
+
+export function flagView(flag: ItemFlag): SignalView {
+  const v = FLAG_VIEWS[flag];
+  return { ...v, label: v.short, explanation: "" };
 }

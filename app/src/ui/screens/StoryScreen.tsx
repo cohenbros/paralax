@@ -1,5 +1,6 @@
 import { Stack } from "expo-router";
 import { useMemo } from "react";
+import { FEATURES } from "@/config";
 import { storySignals } from "@/domain/signals";
 import { useSources, useStory } from "@/state/NewsProvider";
 import { AppText } from "../components/AppText";
@@ -14,7 +15,7 @@ import { strings } from "../strings";
 export function StoryScreen({ id }: { id: string }) {
   const story = useStory(id);
   const sources = useSources();
-  const signals = useMemo(() => (story ? storySignals(story, sources) : []), [story, sources]);
+  const signals = useMemo(() => (story ? storySignals(story, sources, FEATURES) : []), [story, sources]);
 
   if (!story) {
     return (
@@ -31,8 +32,14 @@ export function StoryScreen({ id }: { id: string }) {
       <StoryHeader story={story} />
       <SignalsSection signals={signals} />
       <ArticlesSection items={story.items} sources={sources} />
-      <PerspectivesSection quotes={story.quotes} items={story.items} sources={sources} />
-      <AskGeminiSection title={story.title} url={lead.url} />
+      <PerspectivesSection
+        storyId={story.id}
+        viewpoints={story.insights?.viewpoints ?? []}
+        quotes={story.quotes}
+        items={story.items}
+        sources={sources}
+      />
+      <AskGeminiSection title={story.title} url={lead.url} questions={story.insights?.questions ?? []} />
       <AppText variant="caption" tone="muted">
         {strings.story.copyrightNote}
       </AppText>

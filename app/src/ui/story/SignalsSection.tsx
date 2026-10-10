@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Pressable, StyleSheet, View } from "react-native";
+import { FEATURES } from "@/config";
 import type { Coverage } from "@/domain/lean";
 import type { Signal } from "@/domain/signals";
 import { AppText } from "../components/AppText";
@@ -73,7 +74,7 @@ export function SignalsSection({ signals }: { signals: Signal[] }) {
         </View>
       ) : (
         <AppText variant="caption" tone="muted">
-          {strings.story.leanPending}
+          {FEATURES.politicalLean ? strings.story.leanPending : strings.story.signalsHint}
         </AppText>
       )}
       {signals.map((s) => (

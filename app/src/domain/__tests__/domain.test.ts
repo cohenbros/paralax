@@ -17,6 +17,7 @@ const item = (over: Record<string, unknown> = {}) => ({
   published: "2026-10-09T10:00:00.000Z",
   category: "אקטואליה",
   sponsored: false,
+  flags: [],
   ...over,
 });
 
@@ -30,6 +31,7 @@ const story = (over: Partial<Story> = {}): Story => ({
   independent_sources: 1,
   regions: ["il"],
   quotes: [],
+  insights: null,
   items: [item()],
   ...over,
 });
@@ -149,30 +151,46 @@ describe("lean", () => {
 describe("storySignals", () => {
   const now = Date.parse("2026-10-09T12:00:00Z");
   const sources = { a: profile("a", "left"), b: profile("b", "right"), c: profile("c", "center") };
+  const lean = { politicalLean: true };
+  const noLean = { politicalLean: false };
 
   it("always includes the source count", () => {
-    expect(storySignals(story(), {}, now)).toEqual([{ kind: "sources", count: 1 }]);
+    expect(storySignals(story(), {}, noLean, now)).toEqual([{ kind: "sources", count: 1 }]);
   });
 
-  it("wide coverage across the spectrum, unconfirmed, opinion, international", () => {
+  it("orders critical-thinking signals first: sponsored, unconfirmed, anonymous, ... then context", () => {
     const s = story({
       independent_sources: 2,
       regions: ["il", "world"],
       items: [
-        item({ id: "1", source: "a", hedged: true, opinion: true }),
-        item({ id: "2", source: "b", hedged: true }),
+        item({ id: "1", source: "a", sponsored: true, flags: ["hedged", "opinion", "anonymous", "study"] }),
+        item({ id: "2", source: "b", flags: ["hedged", "anonymous", "social"] }),
       ] as Story["items"],
     });
-    const kinds = storySignals(s, sources, now).map((x) => x.kind);
-    expect(kinds).toEqual(["sources", "spectrum", "unconfirmed", "opinion", "international"]);
-    const spectrum = storySignals(s, sources, now).find((x) => x.kind === "spectrum");
-    expect(spectrum).toMatchObject({ spread: "wide" });
+    expect(storySignals(s, sources, noLean, now).map((x) => x.kind)).toEqual([
+      "sponsored", "unconfirmed", "anonymous", "social", "study", "opinion", "sources", "international",
+    ]);
   });
 
-  it("one-sided coverage", () => {
-    const s = story({ items: [item({ id: "1", source: "a" }), item({ id: "2", source: "a2" })] as Story["items"] });
+  it("unconfirmed/anonymous need at least half of the articles", () => {
+    const s = story({
+      items: [item({ id: "1", flags: ["hedged"] }), item({ id: "2" }), item({ id: "3" })] as Story["items"],
+    });
+    expect(storySignals(s, {}, noLean, now).map((x) => x.kind)).not.toContain("unconfirmed");
+  });
+
+  it("sensational when the lead headline is", () => {
+    const s = story({ id: "1", items: [item({ id: "1", flags: ["sensational"] }), item({ id: "2" }), item({ id: "3" })] as Story["items"] });
+    expect(storySignals(s, {}, noLean, now).map((x) => x.kind)).toContain("sensational");
+  });
+
+  it("spectrum only when the political-lean feature is on", () => {
+    const s = story({ items: [item({ id: "1", source: "a" }), item({ id: "2", source: "b" })] as Story["items"] });
+    expect(storySignals(s, sources, noLean, now).map((x) => x.kind)).not.toContain("spectrum");
+    expect(storySignals(s, sources, lean, now).find((x) => x.kind === "spectrum")).toMatchObject({ spread: "wide" });
+    const one = story({ items: [item({ id: "1", source: "a" }), item({ id: "2", source: "a2" })] as Story["items"] });
     const src = { a: profile("a", "left"), a2: profile("a2", "center-left") };
-    expect(storySignals(s, src, now).find((x) => x.kind === "spectrum")).toMatchObject({ spread: "one-sided" });
+    expect(storySignals(one, src, lean, now).find((x) => x.kind === "spectrum")).toMatchObject({ spread: "one-sided" });
   });
 
   it("developing: two new sources in the last 3 hours on an older story", () => {
@@ -183,7 +201,26 @@ describe("storySignals", () => {
         item({ id: "3", source: "c", published: "2026-10-09T11:30:00Z" }),
       ] as Story["items"],
     });
-    expect(storySignals(s, sources, now).find((x) => x.kind === "developing")).toEqual({ kind: "developing", newSources: 2 });
+    expect(storySignals(s, sources, noLean, now).find((x) => x.kind === "developing")).toEqual({ kind: "developing", newSources: 2 });
+  });
+});
+
+describe("parseLatest: flags and insights", () => {
+  it("keeps known flags, maps the legacy opinion/hedged fields, validates insights", () => {
+    const raw = {
+      version: 1,
+      stories: [
+        {
+          ...story(),
+          insights: { questions: ["מה הרקע?", 5], viewpoints: [{ stance: "עמדה", check: "מה לבדוק" }, { stance: "חסר" }] },
+          items: [item({ flags: ["study", "bogus"] }), item({ id: "i2", opinion: true, hedged: true })],
+        },
+      ],
+    };
+    const s = parseLatest(raw).stories[0]!;
+    expect(s.items[0]!.flags).toEqual(["study"]);
+    expect(s.items[1]!.flags).toEqual(["opinion", "hedged"]);
+    expect(s.insights).toEqual({ questions: ["מה הרקע?"], viewpoints: [{ stance: "עמדה", check: "מה לבדוק" }] });
   });
 });
 

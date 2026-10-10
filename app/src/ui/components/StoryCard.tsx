@@ -1,5 +1,6 @@
 import { memo, useMemo } from "react";
 import { Pressable, StyleSheet, View } from "react-native";
+import { FEATURES } from "@/config";
 import { storySignals } from "@/domain/signals";
 import { relativeTime } from "@/domain/time";
 import type { SourceProfile, Story } from "@/domain/types";
@@ -18,10 +19,17 @@ type Props = {
   hero?: boolean; // הכרטיס הראשון בפיד: גדול יותר, עם תקציר קצר
 };
 
+const MAX_CARD_TAGS = 3;
+
 // כרטיס לכל אירוע (לא לכל כתבה): כותרת, פס קשת וסימנים קטנים. בלי תקציר, כדי שיהיה קל לסרוק.
 export const StoryCard = memo(function StoryCard({ story, sources, onPress, hero = false }: Props) {
   const colors = useColors();
-  const signals = useMemo(() => storySignals(story, sources), [story, sources]);
+  const signals = useMemo(() => storySignals(story, sources, FEATURES), [story, sources]);
+  // בכרטיס רק הסימנים החשובים ביותר (הרשימה כבר ממוינת לפי חשיבות) ומספר המקורות; כל השאר במסך הידיעה
+  const tags = [
+    ...signals.filter((s) => s.kind !== "spectrum" && s.kind !== "sources").slice(0, MAX_CARD_TAGS - 1),
+    ...signals.filter((s) => s.kind === "sources"),
+  ];
   const spectrum = signals.find((s) => s.kind === "spectrum");
 
   return (
@@ -54,7 +62,7 @@ export const StoryCard = memo(function StoryCard({ story, sources, onPress, hero
       {spectrum?.kind === "spectrum" ? <SpectrumBar coverage={spectrum.coverage} /> : null}
 
       <View style={styles.tags}>
-        {signals.map((s) => (
+        {tags.map((s) => (
           <SignalTag key={s.kind} view={signalView(s)} />
         ))}
       </View>

@@ -2,7 +2,20 @@
 // רשומה פגומה נזרקת; קובץ בגרסה לא מוכרת נדחה כולו.
 
 import { isSafeHttpUrl } from "./links";
-import { DATA_VERSION, EVIDENCE_FIELDS, type EvidenceField, type Item, type Latest, type Quote, type Region, type SourceProfile, type Story } from "./types";
+import {
+  DATA_VERSION,
+  EVIDENCE_FIELDS,
+  ITEM_FLAGS,
+  type EvidenceField,
+  type Insights,
+  type Item,
+  type ItemFlag,
+  type Latest,
+  type Quote,
+  type Region,
+  type SourceProfile,
+  type Story,
+} from "./types";
 
 type Obj = Record<string, unknown>;
 const isObj = (v: unknown): v is Obj => typeof v === "object" && v !== null && !Array.isArray(v);
@@ -28,9 +41,29 @@ function parseItem(v: unknown): Item | null {
     category: str(category) ? category : "",
     sponsored: sponsored === true,
     ...(str(title_he) && title_he ? { title_he, summary_he: str(summary_he) ? summary_he : "" } : {}),
-    opinion: v.opinion === true,
-    hedged: v.hedged === true,
+    flags: parseFlags(v),
   };
+}
+
+// סימנים מוכרים בלבד; תומך גם בפורמט הישן (opinion/hedged כשדות נפרדים) מעותק שמור במכשיר
+function parseFlags(v: Obj): ItemFlag[] {
+  const listed = Array.isArray(v.flags) ? v.flags : [];
+  const legacy = [v.opinion === true && "opinion", v.hedged === true && "hedged"];
+  return ITEM_FLAGS.filter((f) => listed.includes(f) || legacy.includes(f));
+}
+
+const MAX_AI_TEXT = 300;
+const aiText = (v: unknown): v is string => str(v) && v.trim().length > 0 && v.length <= MAX_AI_TEXT;
+
+function parseInsights(v: unknown): Insights | null {
+  if (!isObj(v)) return null;
+  const questions = Array.isArray(v.questions) ? v.questions.filter(aiText) : [];
+  const viewpoints = Array.isArray(v.viewpoints)
+    ? v.viewpoints
+        .filter((p): p is Obj => isObj(p) && aiText(p.stance) && aiText(p.check))
+        .map((p) => ({ stance: p.stance as string, check: p.check as string }))
+    : [];
+  return questions.length || viewpoints.length ? { questions, viewpoints } : null;
 }
 
 function parseQuote(v: unknown, itemIds: Set<string>): Quote | null {
@@ -55,6 +88,7 @@ function parseStory(v: unknown): Story | null {
     independent_sources: typeof independent_sources === "number" && independent_sources >= 1 ? independent_sources : 1,
     regions: Array.isArray(v.regions) ? v.regions.filter(isRegion) : [],
     quotes: Array.isArray(v.quotes) ? v.quotes.map((q) => parseQuote(q, itemIds)).filter((q): q is Quote => q !== null) : [],
+    insights: parseInsights(v.insights),
     items,
   };
 }

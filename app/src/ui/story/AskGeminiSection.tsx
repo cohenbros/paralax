@@ -1,31 +1,64 @@
-import { Share, StyleSheet, View } from "react-native";
+import { Pressable, Share, StyleSheet, View } from "react-native";
 import { geminiPrompt } from "@/domain/display";
-import { Chip } from "../components/Chip";
-import { Section } from "../components/Section";
+import { AiMark } from "../components/AiMark";
 import { AppText } from "../components/AppText";
+import { Icon } from "../components/Icon";
+import { Section } from "../components/Section";
 import { strings } from "../strings";
-import { spacing } from "../theme";
+import { radius, spacing, useColors } from "../theme";
 
-// "רוצה להבין יותר?": מכין שאלה ופותח את Share של המכשיר, כדי להמשיך ב-Gemini עם החשבון של המשתמש.
-// בלי מפתח API של המפתחת (CLAUDE.md).
-export function AskGeminiSection({ title, url }: { title: string; url: string }) {
+type Props = { title: string; url: string; questions: string[] };
+
+// שאלה כשורה ברוחב מלא: שאלות ארוכות נשברות לכמה שורות במקום לגלוש מהמסך
+function QuestionRow({ question, onPress }: { question: string; onPress: () => void }) {
+  const colors = useColors();
+  return (
+    <Pressable
+      onPress={onPress}
+      accessibilityRole="button"
+      accessibilityHint={strings.ask.a11yHint}
+      style={({ pressed }) => [styles.question, { borderColor: colors.border, backgroundColor: pressed ? colors.accentSoft : colors.surface }]}
+    >
+      <Icon name="chatbubble-ellipses-outline" size={18} color={colors.accent} />
+      <AppText variant="label" style={styles.flex}>
+        {question}
+      </AppText>
+    </Pressable>
+  );
+}
+
+// "רוצה להבין יותר?": שאלות שנגזרו מתוך הידיעה (AI), או שאלות כלליות כשאין.
+// לחיצה פותחת את Share של המכשיר כדי להמשיך ב-Gemini עם החשבון של המשתמש, בלי מפתח של המפתחת (CLAUDE.md).
+export function AskGeminiSection({ title, url, questions }: Props) {
+  const specific = questions.length > 0;
+  const list = specific ? questions : strings.ask.questions;
   const ask = (question: string) => {
     Share.share({ message: geminiPrompt(title, url, question) }).catch(() => {});
   };
   return (
     <Section title={strings.ask.title}>
-      <AppText variant="caption" tone="muted">
-        {strings.ask.hint}
-      </AppText>
-      <View style={styles.wrap}>
-        {strings.ask.questions.map((q) => (
-          <Chip key={q} label={q} selected={false} onPress={() => ask(q)} />
-        ))}
+      <View style={styles.row}>
+        <AppText variant="caption" tone="muted" style={styles.flex}>
+          {strings.ask.hint}
+        </AppText>
+        {specific ? <AiMark label={strings.story.aiGenerated} /> : null}
       </View>
+      {list.map((q) => (
+        <QuestionRow key={q} question={q} onPress={() => ask(q)} />
+      ))}
     </Section>
   );
 }
 
 const styles = StyleSheet.create({
-  wrap: { flexDirection: "row", flexWrap: "wrap", gap: spacing.sm },
+  row: { flexDirection: "row", alignItems: "center", gap: spacing.sm },
+  flex: { flex: 1 },
+  question: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: spacing.sm,
+    padding: spacing.md,
+    borderRadius: radius.sm,
+    borderWidth: StyleSheet.hairlineWidth,
+  },
 });

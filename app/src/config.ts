@@ -13,3 +13,9 @@ export const CONTACT_URL = "https://github.com/cohenbros/paralax/issues";
 
 // "דווח על טעות": issue חדש במאגר, עם פרטי הידיעה ממולאים מראש
 export const REPORT_ISSUE_URL = "https://github.com/cohenbros/paralax/issues/new";
+
+// מתגי תכונות. נטייה פוליטית (פס הקשת, נטיית קהל) מוסתרת בינתיים לפי החלטת גנית (2026-10-10);
+// הקוד והנתונים נשארים, ואפשר להחזיר ע"י שינוי ל-true.
+export const FEATURES = {
+  politicalLean: false,
+} as const;

@@ -31,8 +31,16 @@ export type Item = {
   // תרגום AI לעברית (רק לכתבות שאינן בעברית)
   title_he?: string;
   summary_he?: string;
-  opinion?: boolean; // טור דעה
-  hedged?: boolean; // נשען על דיווח לא מאושר
+  flags: ItemFlag[]; // סימנים לחשיבה ביקורתית (מחושבים באוסף, collector/src/signals.ts)
+};
+
+export const ITEM_FLAGS = ["opinion", "hedged", "anonymous", "study", "social", "sensational"] as const;
+export type ItemFlag = (typeof ITEM_FLAGS)[number];
+
+// תוכן AI לחשיבה ביקורתית: שאלות להרחבה מתוך הידיעה, ועמדות מהדיון הציבורי עם "מה כדאי לבדוק"
+export type Insights = {
+  questions: string[];
+  viewpoints: { stance: string; check: string }[];
 };
 
 // ציטוט מתוך כותרת: "דובר: ציטוט" (ai = מכותרת שתורגמה)
@@ -49,6 +57,7 @@ export type Story = {
   independent_sources: number;
   regions: Region[];
   quotes: Quote[];
+  insights: Insights | null;
   items: Item[];
 };
 

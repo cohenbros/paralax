@@ -1,19 +1,25 @@
-// סימני אמינות ורלוונטיות לאירוע. רק עובדות שנגזרות מהנתונים; הניסוח לתצוגה ב-ui.
+// סימני אמינות וחשיבה ביקורתית לאירוע. רק עובדות שנגזרות מהנתונים; הניסוח לתצוגה ב-ui/signalText.ts.
+// הסדר = סדר החשיבות לקורא: קודם מה שמחייב זהירות, אחר כך הקשר.
 import { coverage, type Coverage } from "./lean";
-import type { SourceProfile, Story } from "./types";
+import type { ItemFlag, SourceProfile, Story } from "./types";
 
 export const DEVELOPING_WINDOW_MS = 3 * 3600_000;
 
 export type Signal =
-  | { kind: "sources"; count: number }
-  | { kind: "spectrum"; coverage: Coverage; spread: "wide" | "one-sided" | "partial" }
+  | { kind: "sponsored" }
   | { kind: "unconfirmed" }
+  | { kind: "anonymous" }
+  | { kind: "sensational" }
+  | { kind: "social" }
+  | { kind: "study" }
   | { kind: "opinion"; all: boolean }
+  | { kind: "sources"; count: number }
   | { kind: "developing"; newSources: number }
   | { kind: "international" }
-  | { kind: "sponsored" };
+  | { kind: "spectrum"; coverage: Coverage; spread: "wide" | "one-sided" | "partial" };
 
 export type SignalKind = Signal["kind"];
+export type SignalOptions = { politicalLean: boolean };
 
 function spectrum(c: Coverage): Signal | null {
   // צריך לפחות שני מקורות שהנטייה שלהם ידועה כדי לומר משהו על פיזור
@@ -23,16 +29,28 @@ function spectrum(c: Coverage): Signal | null {
   return { kind: "spectrum", coverage: c, spread };
 }
 
-export function storySignals(story: Story, sources: Record<string, SourceProfile>, now: number = Date.now()): Signal[] {
-  const out: Signal[] = [{ kind: "sources", count: story.independent_sources }];
-  const spec = spectrum(coverage(story, sources));
-  if (spec) out.push(spec);
+export function storySignals(
+  story: Story,
+  sources: Record<string, SourceProfile>,
+  options: SignalOptions,
+  now: number = Date.now(),
+): Signal[] {
+  const n = story.items.length;
+  const count = (f: ItemFlag) => story.items.filter((i) => i.flags.includes(f)).length;
+  const lead = story.items.find((i) => i.id === story.id);
+  // "רוב הכתבות" לסימנים שמעידים על האירוע עצמו; "לפחות אחת" לסימנים שכדאי לדעת עליהם בכל מקרה
+  const most = (f: ItemFlag) => count(f) > 0 && count(f) * 2 >= n;
+  const out: Signal[] = [];
 
-  const hedged = story.items.filter((i) => i.hedged).length;
-  if (hedged > 0 && hedged * 2 >= story.items.length) out.push({ kind: "unconfirmed" });
+  if (story.items.some((i) => i.sponsored)) out.push({ kind: "sponsored" });
+  if (most("hedged")) out.push({ kind: "unconfirmed" });
+  if (most("anonymous")) out.push({ kind: "anonymous" });
+  if (lead?.flags.includes("sensational") || most("sensational")) out.push({ kind: "sensational" });
+  if (count("social") > 0) out.push({ kind: "social" });
+  if (count("study") > 0) out.push({ kind: "study" });
+  if (count("opinion") > 0) out.push({ kind: "opinion", all: count("opinion") === n });
 
-  const opinions = story.items.filter((i) => i.opinion).length;
-  if (opinions > 0) out.push({ kind: "opinion", all: opinions === story.items.length });
+  out.push({ kind: "sources", count: story.independent_sources });
 
   // מקורות שהצטרפו בשעות האחרונות, כשהאירוע עצמו התחיל קודם
   const first = Math.min(...story.items.map((i) => Date.parse(i.published)));
@@ -42,6 +60,10 @@ export function storySignals(story: Story, sources: Record<string, SourceProfile
   if (recent.size >= 2 && now - first >= DEVELOPING_WINDOW_MS) out.push({ kind: "developing", newSources: recent.size });
 
   if (story.regions.includes("il") && story.regions.includes("world")) out.push({ kind: "international" });
-  if (story.items.some((i) => i.sponsored)) out.push({ kind: "sponsored" });
+
+  if (options.politicalLean) {
+    const spec = spectrum(coverage(story, sources));
+    if (spec) out.push(spec);
+  }
   return out;
 }

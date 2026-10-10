@@ -1,5 +1,6 @@
 import { Stack } from "expo-router";
 import { Pressable, StyleSheet, View } from "react-native";
+import { FEATURES } from "@/config";
 import { leanBucket } from "@/domain/lean";
 import { useSources } from "@/state/NewsProvider";
 import { AppText } from "../components/AppText";
@@ -77,6 +78,7 @@ export function SourceScreen({ id }: { id: string }) {
             <AppText tone="muted">{s.unknown}</AppText>
           )}
         </View>
+        {FEATURES.politicalLean ? (
         <View style={styles.field}>
           <AppText variant="label">{s.audienceLean}</AppText>
           <View style={styles.row}>
@@ -90,6 +92,7 @@ export function SourceScreen({ id }: { id: string }) {
             {s.leanNote}
           </AppText>
         </View>
+        ) : null}
       </Section>
 
       {source.evidence_urls.length ? (
