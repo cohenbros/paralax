@@ -19,6 +19,7 @@ export function CategoryBar({ categories, selected, onSelect }: Props) {
 }
 
 const styles = StyleSheet.create({
-  scroll: { flexGrow: 0 },
+  // בלי flexShrink: 0 הרשימה שמתחת "מועכת" את הפס (נראה בתצוגה בדפדפן)
+  scroll: { flexGrow: 0, flexShrink: 0 },
   bar: { paddingHorizontal: spacing.lg, paddingVertical: spacing.sm, gap: spacing.sm },
 });

@@ -45,6 +45,7 @@ test("collectQuotes: דובר אחד פעם אחת, סימון AI לתרגום",
     { id: "a", title: 'נתניהו: "לא נוותר"', ai: false },
     { id: "b", title: 'נתניהו: "נמשיך עד הסוף"', ai: false },
     { id: "c", title: 'Rubio: "Sanctions will continue"', ai: true },
+    { id: "d", title: 'בנימין נתניהו: "אמירה נוספת"', ai: false },
   ]);
   assert.deepEqual(quotes, [
     { speaker: "נתניהו", text: "לא נוותר", item: "a" },

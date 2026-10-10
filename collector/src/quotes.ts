@@ -49,7 +49,7 @@ export function collectQuotes(items: { id: string; title: string; ai: boolean }[
   const out: Quote[] = [];
   for (const it of items) {
     const q = extractQuote(it.title);
-    const key = q?.speaker.split(/s+/).pop();
+    const key = q?.speaker.split(/\s+/).pop();
     if (!q || !key || seen.has(key)) continue;
     seen.add(key);
     out.push(it.ai ? { ...q, item: it.id, ai: true } : { ...q, item: it.id });

@@ -1,6 +1,6 @@
 import { Stack, useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import { I18nManager, Pressable, StyleSheet, View } from "react-native";
+import { I18nManager, Platform, Pressable, StyleSheet, View } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { NewsProvider } from "@/state/NewsProvider";
 import { PreferencesProvider, usePreferences } from "@/state/PreferencesProvider";
@@ -10,7 +10,13 @@ import { useColors } from "@/ui/theme";
 
 // בגרסה בנויה RTL נכפה ע"י expo-localization (app.json). ב-Expo Go (SDK 57) לא, ולכן הכיוון נקבע גם בשורש.
 // left/right בסגנונות לא מתהפכים: textAlign: "right" תמיד ימין.
-I18nManager.swapLeftAndRightInRTL(false);
+// (בדפדפן הפונקציה לא קיימת; שם אין היפוך אוטומטי ממילא)
+if (Platform.OS !== "web") I18nManager.swapLeftAndRightInRTL(false);
+// בדפדפן (תצוגה מקדימה) הכיוון נקבע על הדף עצמו
+if (Platform.OS === "web" && typeof document !== "undefined") {
+  document.documentElement.dir = "rtl";
+  document.documentElement.lang = "he";
+}
 
 function SettingsButton() {
   const router = useRouter();
@@ -72,5 +78,6 @@ export default function RootLayout() {
 }
 
 const styles = StyleSheet.create({
-  root: { flex: 1, direction: "rtl" },
+  // "direction" לא נתמך בדפדפן; שם הכיוון מגיע מ-<html dir="rtl">
+  root: Platform.OS === "web" ? { flex: 1 } : { flex: 1, direction: "rtl" },
 });
