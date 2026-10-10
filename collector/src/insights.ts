@@ -6,8 +6,9 @@ import { generateJson, inBatches, isCleanHebrew } from "./gemini.ts";
 import { isOffensive } from "./quotes.ts";
 import type { Insights, Story } from "./types.ts";
 
-const BATCH_SIZE = 10;
-const MAX_PER_RUN = 60;
+const BATCH_SIZE = 15;
+// ריצה ראשונה משלימה את כל האירועים הקיימים; אחר כך רק אירועים חדשים (עשרות בודדות לריצה)
+const MAX_PER_RUN = 150;
 const MAX_QUESTION = 120;
 const MAX_VIEWPOINT = 220;
 
@@ -97,11 +98,11 @@ async function insightsBatch(batch: Story[]): Promise<Map<string, Insights>> {
   return out;
 }
 
-// רק לאירועים שמוצגים בעברית ושעוד אין להם תוכן; קודם אירועים עם יותר מקורות, ואז החדשים
+// רק לאירועים שמוצגים בעברית ושעוד אין להם תוכן; החדשים קודם, כי הפיד ממוין לפי זמן
 export function generateInsights(stories: Story[]): Promise<Map<string, Insights>> {
   const todo = stories
     .filter((s) => s.lang === "he" && !s.insights && !s.items.every((i) => i.sponsored))
-    .sort((a, b) => b.independent_sources - a.independent_sources || Date.parse(b.updated) - Date.parse(a.updated))
+    .sort((a, b) => Date.parse(b.updated) - Date.parse(a.updated))
     .slice(0, MAX_PER_RUN);
   return inBatches(todo, BATCH_SIZE, "שאלות ועמדות", insightsBatch);
 }

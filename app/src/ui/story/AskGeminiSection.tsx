@@ -27,11 +27,11 @@ function QuestionRow({ question, onPress }: { question: string; onPress: () => v
   );
 }
 
-// "רוצה להבין יותר?": שאלות שנגזרו מתוך הידיעה (AI), או שאלות כלליות כשאין.
+// "רוצה להבין יותר?": שאלות שנגזרו מתוך הידיעה (AI), או שאלה כללית אחת כשעוד אין.
 // לחיצה פותחת את Share של המכשיר כדי להמשיך ב-Gemini עם החשבון של המשתמש, בלי מפתח של המפתחת (CLAUDE.md).
 export function AskGeminiSection({ title, url, questions }: Props) {
   const specific = questions.length > 0;
-  const list = specific ? questions : strings.ask.questions;
+  const list = specific ? questions : [strings.ask.general];
   const ask = (question: string) => {
     Share.share({ message: geminiPrompt(title, url, question) }).catch(() => {});
   };
