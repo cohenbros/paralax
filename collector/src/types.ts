@@ -1,4 +1,5 @@
 import type { Quote } from "./quotes.ts";
+import type { ItemFlag } from "./signals.ts";
 
 // מבנה sources.json (ראו CLAUDE.md)
 export type Source = {
@@ -48,8 +49,13 @@ export type Item = {
   // תרגום AI לעברית, רק לידיעות שאינן בעברית
   title_he?: string;
   summary_he?: string;
-  opinion?: true; // טור דעה
-  hedged?: true; // נשען על דיווח לא מאושר ("לפי דיווח", "reportedly")
+  flags?: ItemFlag[]; // סימנים לחשיבה ביקורתית (signals.ts); נשמט כשריק
+};
+
+// תוכן AI לחשיבה ביקורתית (insights.ts)
+export type Insights = {
+  questions: string[];
+  viewpoints: { stance: string; check: string }[];
 };
 
 export type Story = {
@@ -63,6 +69,7 @@ export type Story = {
   independent_sources: number; // מספר בעלים שונים
   regions: ("il" | "world")[];
   quotes?: Quote[];
+  insights?: Insights;
   items: Item[];
 };
 

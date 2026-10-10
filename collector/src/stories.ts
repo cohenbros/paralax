@@ -12,7 +12,7 @@ function clusterKey(it: Item, src: Source): { title: string; lang: string } {
 
 // כותרת מובילה: עדיפות לכתבה חדשותית (לא ממומנת, לא דעה) שנכתבה בעברית, אחר כך מתורגמת, אחר כך כל השאר
 function pickLead(members: Item[], sources: Map<string, Source>): Item {
-  const news = members.filter((m) => !m.sponsored && !m.opinion);
+  const news = members.filter((m) => !m.sponsored && !m.flags?.includes("opinion"));
   const pool = news.length ? news : members;
   return (
     pool.find((m) => sources.get(m.source)!.language === "he") ??

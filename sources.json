@@ -356,6 +356,34 @@
       "profile_notes": "Owner: Wikipedia 'Hevrat HaHadashot': 'Keshet took full ownership of the company' after the Jan 2019 Reshet/Channel 10 merger; infobox lists n12.co.il as its website (secondary source). Press council: three representatives of 'החדשות 12' in March 2026 plenum list."
     },
     {
+      "id": "c14",
+      "name": "ערוץ 14",
+      "site": "https://www.c14.co.il",
+      "feed": "https://www.c14.co.il/feed/",
+      "feed_checked": null,
+      "feed_terms_ok": null,
+      "language": "he",
+      "region": "il",
+      "categories": [
+        "אקטואליה",
+        "פוליטיקה"
+      ],
+      "owner_group": "c14",
+      "owner": null,
+      "funding": null,
+      "press_council_member": null,
+      "corrections_policy_url": null,
+      "ifcn_signatory": null,
+      "audience_lean": {
+        "range": null,
+        "evidence_url": null
+      },
+      "evidence": {},
+      "evidence_urls": [],
+      "profile_checked": null,
+      "profile_notes": "נוסף 2026-10-10. פרופיל (בעלות, מימון) עוד לא נחקר."
+    },
+    {
       "id": "kan",
       "name": "כאן חדשות",
       "site": "https://www.kan.org.il",

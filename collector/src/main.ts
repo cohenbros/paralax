@@ -4,19 +4,21 @@
 //   OUT_DIR                – תיקיית הפלט (ברירת מחדל: <repo>/site)
 //   PREVIOUS_LATEST_URL    – כתובת latest.json שפורסם בריצה הקודמת (כדי לשמור 48 שעות גם כשהפיד קצר)
 //   COLLECTOR_CONTACT_URL  – קישור למאגר, נכנס ל-User-Agent
-//   GEMINI_API_KEY         – לתרגום כותרות לעברית (אופציונלי; בלעדיו מדלגים על התרגום)
+//   GEMINI_API_KEY         – לתרגום ולשאלות/עמדות (אופציונלי; בלעדיו מדלגים על שניהם)
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { describeError, fetchFeed } from "./fetch-feed.ts";
+import { isCleanHebrew } from "./gemini.ts";
+import { generateInsights } from "./insights.ts";
 import { cleanText, detectCategory, fixLink, itemId, parseDate, resolvePublished, truncate } from "./normalize.ts";
 import { parseFeed } from "./parse.ts";
-import { isHedged, isOpinion } from "./signals.ts";
+import { itemFlags } from "./signals.ts";
 import { isSponsored } from "./sponsored.ts";
 import { buildStories } from "./stories.ts";
-import { isCleanHebrew, translateToHebrew } from "./translate.ts";
-import type { Item, Latest, Source } from "./types.ts";
+import { translateToHebrew } from "./translate.ts";
+import type { Insights, Item, Latest, Source } from "./types.ts";
 
 const REPO = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
 const OUT_DIR = process.env.OUT_DIR ?? join(REPO, "site");
@@ -30,7 +32,11 @@ export function isFetchable(s: Source): boolean {
   return /^https?:\/\//.test(s.feed) && s.feed_terms_ok !== false;
 }
 
-async function loadPrevious(): Promise<Item[]> {
+type Previous = { items: Item[]; insights: Map<string, Insights> };
+
+// הריצה הקודמת: ידיעות (כדי לשמור 48 שעות) ותוכן AI שכבר נוצר (כדי לא לייצר שוב)
+async function loadPrevious(): Promise<Previous> {
+  const empty: Previous = { items: [], insights: new Map() };
   try {
     let data: Latest;
     if (process.env.PREVIOUS_LATEST_URL) {
@@ -39,13 +45,16 @@ async function loadPrevious(): Promise<Item[]> {
       data = (await res.json()) as Latest;
     } else {
       const file = join(OUT_DIR, "data", "latest.json");
-      if (!existsSync(file)) return [];
+      if (!existsSync(file)) return empty;
       data = JSON.parse(readFileSync(file, "utf8")) as Latest;
     }
-    return data.stories.flatMap((s) => s.items);
+    return {
+      items: data.stories.flatMap((s) => s.items),
+      insights: new Map(data.stories.filter((s) => s.insights).map((s) => [s.id, s.insights!])),
+    };
   } catch (e) {
     console.warn(`לא נטען latest.json קודם: ${describeError(e)}`);
-    return [];
+    return empty;
   }
 }
 
@@ -72,12 +81,19 @@ async function collectSource(src: Source, now: Date, prevById: Map<string, Item>
       published: resolvePublished(parseDate(raw.date), now, prev?.published),
       category: detectCategory(raw, url, src),
       sponsored: isSponsored({ title, summary, categories, author: cleanText(raw.author), url }),
-      ...(isOpinion(url, categories) ? { opinion: true as const } : {}),
-      ...(isHedged(title, summary) ? { hedged: true as const } : {}),
+      ...withFlags(itemFlags(url, categories, title, summary)),
       ...(keepTranslation ? { title_he: prev.title_he, summary_he: prev.summary_he ?? "" } : {}),
     });
   }
   return items;
+}
+
+const withFlags = (flags: ReturnType<typeof itemFlags>) => (flags.length ? { flags } : {});
+
+// ידיעה מהריצה הקודמת שכבר לא בפיד: מחשבים סימנים מחדש (גם כדי להסב את השדות הישנים opinion/hedged)
+function refreshPrevious(it: Item): Item {
+  const { opinion: _o, hedged: _h, flags: _f, ...rest } = it as Item & { opinion?: true; hedged?: true };
+  return { ...rest, ...withFlags(itemFlags(it.url, [], it.title, it.summary)) };
 }
 
 // פרופילים לתצוגה: בלי שדות פנימיים, וערך שמסומן "לאמת" לא מתפרסם
@@ -108,7 +124,8 @@ async function main() {
   const now = new Date();
   const sources = loadSources();
   const byId = new Map(sources.map((s) => [s.id, s]));
-  const previous = (await loadPrevious()).filter((it) => byId.has(it.source));
+  const prevRun = await loadPrevious();
+  const previous = prevRun.items.filter((it) => byId.has(it.source));
   const prevById = new Map(previous.map((it) => [it.id, it]));
 
   const active = sources.filter(isFetchable);
@@ -127,7 +144,7 @@ async function main() {
   });
 
   // ידיעות מהריצה הקודמת שכבר ירדו מהפיד נשמרות עד שיוצאות מחלון ה-48 שעות
-  for (const it of previous) if (!fresh.has(it.id)) fresh.set(it.id, it);
+  for (const it of previous) if (!fresh.has(it.id)) fresh.set(it.id, refreshPrevious(it));
   const cutoff = now.getTime() - WINDOW_HOURS * 3600_000;
   const items = [...fresh.values()].filter((it) => Date.parse(it.published) >= cutoff);
 
@@ -153,6 +170,19 @@ async function main() {
   if (untranslated.length) console.log(`תורגמו ${translations.size}/${untranslated.length} ידיעות`);
 
   const stories = buildStories(items, byId);
+
+  // שאלות ועמדות: משתמשים במה שכבר נוצר לאותו אירוע, ומייצרים רק לחדשים
+  for (const s of stories) {
+    const cached = prevRun.insights.get(s.id);
+    if (cached) s.insights = cached;
+  }
+  const insights = await generateInsights(stories);
+  for (const s of stories) {
+    const generated = insights.get(s.id);
+    if (generated) s.insights = generated;
+  }
+  if (insights.size) console.log(`נוצרו שאלות ועמדות ל-${insights.size} אירועים`);
+
   const latest: Latest = {
     version: 1,
     generated_at: now.toISOString(),

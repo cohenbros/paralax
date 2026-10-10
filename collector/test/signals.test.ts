@@ -3,7 +3,9 @@ import { test } from "node:test";
 import { collectQuotes, extractQuote, isOffensive } from "../src/quotes.ts";
 import { isHedged, isOpinion } from "../src/signals.ts";
 import { buildStories } from "../src/stories.ts";
-import { extractText, isCleanHebrew } from "../src/translate.ts";
+import { extractText, isCleanHebrew } from "../src/gemini.ts";
+import { validateInsights } from "../src/insights.ts";
+import { itemFlags } from "../src/signals.ts";
 import type { Item, Source } from "../src/types.ts";
 
 test("isOpinion: נתיב או תגית של דעות", () => {
@@ -92,4 +94,33 @@ test("isCleanHebrew: דוחה תרגום עם אותיות מכתב אחר", () 
   assert.equal(isCleanHebrew("רช่วยון אוקראיניים"), false);
   assert.equal(isCleanHebrew("סואيلا ברוורמן"), false);
   assert.equal(isCleanHebrew("Panama earthquake"), false);
+});
+
+test("itemFlags: מקורות אנונימיים, מחקר, תיעוד מהרשת, כותרת מתלהמת", () => {
+  const u = "https://www.ynet.co.il/news/article/x";
+  assert.deepEqual(itemFlags(u, [], "גורם בכיר: ההחלטה תתקבל השבוע", ""), ["anonymous"]);
+  assert.deepEqual(itemFlags(u, [], "לפי מחקר חדש, קפה מאריך חיים", ""), ["study"]);
+  assert.deepEqual(itemFlags(u, [], "בסקר: רוב הציבור תומך", ""), ["study"]);
+  assert.deepEqual(itemFlags(u, [], "צפו: הרגע שבו הגשר קרס", ""), ["social"]);
+  assert.deepEqual(itemFlags(u, [], "דרמה בכנסת: החוק נפל", ""), ["sensational"]);
+  assert.deepEqual(itemFlags(u, [], "Officials said the deal is close, reportedly", ""), ["hedged", "anonymous"]);
+  assert.deepEqual(itemFlags(u, [], "הממשלה אישרה את התקציב", "החוקרים במשטרה בודקים"), []);
+  assert.deepEqual(itemFlags("https://www.nytimes.com/2026/10/09/opinion/x.html", [], "Why we must act", ""), ["opinion"]);
+});
+
+test("validateInsights: מסנן טקסט פגום ושומר רק חלקים שלמים", () => {
+  const good = {
+    questions: ["מתי נמדד שיא החום בישראל?", "מה ההבדל בין מזג אוויר לאקלים?", "רช่วยון לא תקין?"],
+    viewpoints: [
+      { stance: "כל שנה אומרים את זה, וזה פשוט מזג אוויר רגיל לעונה", check: "השוואה לממוצע הרב-שנתי של אותו חודש" },
+      { stance: "זו התחממות גלובלית", check: "מגמות של עשרות שנים ולא יום בודד" },
+    ],
+  };
+  const v = validateInsights(good)!;
+  assert.equal(v.questions.length, 2);
+  assert.equal(v.viewpoints.length, 2);
+  // עמדה אחת בלבד לא מספיקה להשוואה – לא מציגים עמדות
+  assert.deepEqual(validateInsights({ questions: good.questions.slice(0, 2), viewpoints: good.viewpoints.slice(0, 1) })!.viewpoints, []);
+  assert.equal(validateInsights({ questions: ["?"], viewpoints: [] }), null);
+  assert.equal(validateInsights({ questions: "junk", viewpoints: null }), null);
 });
