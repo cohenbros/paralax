@@ -43,7 +43,7 @@ const PHRASES: Record<Exclude<ItemFlag, "opinion">, string[]> = {
   ],
   // כותרת מתלהמת
   sensational: [
-    "לא תאמינו", "דרמה", "דרמטי", "דרמטית", "סערה", "סערת", "בהלם", "המום", "המומים", "מטורף", "הזוי", "זעזוע",
+    "דרמה", "דרמטי", "דרמטית", "סערה", "סערת", "בהלם", "המום", "המומים", "מטורף", "הזוי", "זעזוע",
     "you won't believe", "shocking", "stunning", "slams", "destroys", "chaos",
   ],
 };
@@ -70,4 +70,16 @@ export function itemFlags(url: string, categories: string[], title: string, summ
   }
   if (MATCHERS.sensational.test(title) || /!{2,}|\?!/.test(title)) flags.push("sensational");
   return flags;
+}
+
+// כותרת פיתיון מובהקת: מסתירה את העיקר כדי שילחצו. אירוע כזה לא מוצג בפיד (גם בלי סיווג AI).
+const CLICKBAIT = [
+  "לא תאמינו", "לא תאמין", "לא תאמיני", "תתפלאו", "הסיבה תפתיע", "הסיבה תפתיע אתכם", "מה שקרה אחר כך",
+  "מה שקרה אז", "זה מה שקרה", "זו הסיבה ש", "זאת הסיבה ש", "הטריק ש", "הטריק הפשוט", "כך תעשו", "כל מה שצריך לדעת על",
+  "you won't believe", "what happened next", "here's why", "this is why", "the reason will", "this one trick",
+];
+const CLICKBAIT_RE = new RegExp(`(^|[^\\p{L}])[והבלמשכ]?(${CLICKBAIT.map(escape).join("|")})`, "iu");
+
+export function isClickbaitHeadline(title: string): boolean {
+  return CLICKBAIT_RE.test(title);
 }

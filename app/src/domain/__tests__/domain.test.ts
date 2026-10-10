@@ -32,6 +32,7 @@ const story = (over: Partial<Story> = {}): Story => ({
   regions: ["il"],
   quotes: [],
   insights: null,
+  excluded: null,
   items: [item()],
   ...over,
 });
@@ -113,6 +114,14 @@ describe("selectFeed", () => {
     const translated = story({ id: "tr", lang: "he", title_ai: true, updated: "2026-10-09T12:30:00Z" });
     expect(selectFeed([en, translated, ...stories], DEFAULT_PREFERENCES, ALL).map((s) => s.id)).not.toContain("en");
     expect(selectFeed([en, ...stories], DEFAULT_PREFERENCES, ALL).map((s) => s.id)).toContain("en");
+  });
+
+  it("hides clickbait and non-news stories", () => {
+    const bait = story({ id: "bait", excluded: "clickbait", updated: "2026-10-09T13:00:00Z" });
+    const ad = story({ id: "ad", excluded: "not_news", updated: "2026-10-09T13:00:00Z" });
+    const ids = selectFeed([bait, ad, ...stories], DEFAULT_PREFERENCES, ALL).map((s) => s.id);
+    expect(ids).not.toContain("bait");
+    expect(ids).not.toContain("ad");
   });
 
   it("availableCategories returns only categories that have stories", () => {

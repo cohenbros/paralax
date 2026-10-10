@@ -89,6 +89,7 @@ function parseStory(v: unknown): Story | null {
     regions: Array.isArray(v.regions) ? v.regions.filter(isRegion) : [],
     quotes: Array.isArray(v.quotes) ? v.quotes.map((q) => parseQuote(q, itemIds)).filter((q): q is Quote => q !== null) : [],
     insights: parseInsights(v.insights),
+    excluded: v.excluded === "clickbait" || v.excluded === "not_news" ? v.excluded : null,
     items,
   };
 }

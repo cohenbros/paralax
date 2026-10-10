@@ -20,6 +20,7 @@ function readableFilter(stories: Story[]): (s: Story) => boolean {
 export function selectFeed(stories: Story[], prefs: Preferences, filter: CategoryFilter): Story[] {
   const interests = new Set<string>(prefs.interests);
   return stories
+    .filter((s) => !s.excluded) // רק ידיעות אמיתיות: בלי כותרות פיתיון ובלי לא-חדשות
     .filter(readableFilter(stories))
     .filter((s) => interests.has(s.category))
     .filter((s) => matchesRegion(s, prefs.regions))

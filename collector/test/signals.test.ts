@@ -5,7 +5,7 @@ import { isHedged, isOpinion } from "../src/signals.ts";
 import { buildStories } from "../src/stories.ts";
 import { extractText, isCleanHebrew } from "../src/gemini.ts";
 import { validateInsights } from "../src/insights.ts";
-import { itemFlags } from "../src/signals.ts";
+import { isClickbaitHeadline, itemFlags } from "../src/signals.ts";
 import type { Item, Source } from "../src/types.ts";
 
 test("isOpinion: נתיב או תגית של דעות", () => {
@@ -121,6 +121,23 @@ test("validateInsights: מסנן טקסט פגום ושומר רק חלקים ש
   assert.equal(v.viewpoints.length, 2);
   // עמדה אחת בלבד לא מספיקה להשוואה – לא מציגים עמדות
   assert.deepEqual(validateInsights({ questions: good.questions.slice(0, 2), viewpoints: good.viewpoints.slice(0, 1) })!.viewpoints, []);
-  assert.equal(validateInsights({ questions: ["?"], viewpoints: [] }), null);
-  assert.equal(validateInsights({ questions: "junk", viewpoints: null }), null);
+  const empty = { v: 2, kind: "news", questions: [], viewpoints: [] };
+  assert.deepEqual(validateInsights({ questions: ["?"], viewpoints: [] }), empty);
+  assert.deepEqual(validateInsights({ questions: "junk", viewpoints: null }), empty);
+});
+
+test("validateInsights: סיווג – פיתיון ולא-חדשות בלי שאלות; סיווג לא מוכר נחשב חדשות", () => {
+  assert.deepEqual(validateInsights({ kind: "clickbait", questions: ["מה הרקע לאירוע?", "מה זה?"] }), {
+    v: 2, kind: "clickbait", questions: [], viewpoints: [],
+  });
+  assert.equal(validateInsights({ kind: "not_news" })!.kind, "not_news");
+  assert.equal(validateInsights({ kind: "weird" })!.kind, "news");
+});
+
+test("isClickbaitHeadline: כותרות פיתיון מובהקות בלבד", () => {
+  assert.equal(isClickbaitHeadline("הוא פתח את הדלת ולא תאמינו מה הוא ראה"), true);
+  assert.equal(isClickbaitHeadline("זו הסיבה שאתם מתעוררים עייפים"), true);
+  assert.equal(isClickbaitHeadline("You won't believe what this dog did"), true);
+  assert.equal(isClickbaitHeadline("הממשלה אישרה את התקציב"), false);
+  assert.equal(isClickbaitHeadline("דרמה בכנסת: החוק נפל"), false);
 });

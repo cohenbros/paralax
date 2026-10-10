@@ -58,6 +58,8 @@ export type Story = {
   regions: Region[];
   quotes: Quote[];
   insights: Insights | null;
+  // כותרת פיתיון או לא-חדשות (פרסומת, הורוסקופ, חידון): לא מוצג בפיד
+  excluded: "clickbait" | "not_news" | null;
   items: Item[];
 };
 

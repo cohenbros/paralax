@@ -53,7 +53,11 @@ export type Item = {
 };
 
 // תוכן AI לחשיבה ביקורתית (insights.ts)
+export type StoryKind = "news" | "clickbait" | "not_news";
+
 export type Insights = {
+  v?: number; // גרסת ההנחיה (insights.ts); תוכן מגרסה ישנה נוצר מחדש
+  kind?: StoryKind;
   questions: string[];
   viewpoints: { stance: string; check: string }[];
 };
@@ -70,6 +74,8 @@ export type Story = {
   regions: ("il" | "world")[];
   quotes?: Quote[];
   insights?: Insights;
+  // לא מוצג בפיד: כותרת פיתיון או לא-חדשות (מילים מובהקות או סיווג AI). נשאר בקובץ כדי שהסיווג יישמר.
+  excluded?: Exclude<StoryKind, "news">;
   items: Item[];
 };
 

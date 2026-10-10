@@ -14,7 +14,7 @@ import { isCleanHebrew } from "./gemini.ts";
 import { generateInsights } from "./insights.ts";
 import { cleanText, detectCategory, fixLink, itemId, parseDate, resolvePublished, truncate } from "./normalize.ts";
 import { parseFeed } from "./parse.ts";
-import { itemFlags } from "./signals.ts";
+import { isClickbaitHeadline, itemFlags } from "./signals.ts";
 import { isSponsored } from "./sponsored.ts";
 import { buildStories } from "./stories.ts";
 import { translateToHebrew } from "./translate.ts";
@@ -171,7 +171,10 @@ async function main() {
 
   const stories = buildStories(items, byId);
 
-  // שאלות ועמדות: משתמשים במה שכבר נוצר לאותו אירוע, ומייצרים רק לחדשים
+  // כותרת פיתיון מובהקת מסוננת מיד, בלי לחכות ל-AI
+  for (const s of stories) if (isClickbaitHeadline(s.title)) s.excluded = "clickbait";
+
+  // שאלות, עמדות וסיווג: משתמשים במה שכבר נוצר לאותו אירוע (גם מגרסה ישנה, עד שיוחלף), ומייצרים רק לחסרים
   for (const s of stories) {
     const cached = prevRun.insights.get(s.id);
     if (cached) s.insights = cached;
@@ -180,8 +183,10 @@ async function main() {
   for (const s of stories) {
     const generated = insights.get(s.id);
     if (generated) s.insights = generated;
+    if (!s.excluded && s.insights?.kind && s.insights.kind !== "news") s.excluded = s.insights.kind;
   }
-  if (insights.size) console.log(`נוצרו שאלות ועמדות ל-${insights.size} אירועים`);
+  const excluded = stories.filter((s) => s.excluded).length;
+  if (insights.size) console.log(`נוצרו שאלות ועמדות ל-${insights.size} אירועים; ${excluded} סוננו (פיתיון / לא חדשות)`);
 
   const latest: Latest = {
     version: 1,
